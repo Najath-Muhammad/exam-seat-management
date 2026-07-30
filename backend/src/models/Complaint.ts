@@ -20,7 +20,7 @@ export interface IComplaint extends Document {
 const complaintSchema = new Schema<IComplaint>(
   {
     candidateId: { type: Schema.Types.ObjectId, ref: 'Candidate', required: true },
-    sessionId: { type: Schema.Types.ObjectId, ref: 'ExamSession', required: true },
+    sessionId: { type: Schema.Types.ObjectId, ref: 'Session', required: true },
     description: { type: String, required: true },
     status: { type: String, enum: Object.values(ComplaintStatus), default: ComplaintStatus.PENDING },
     resolutionRemarks: { type: String }
