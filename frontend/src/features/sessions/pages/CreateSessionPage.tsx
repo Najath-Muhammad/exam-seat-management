@@ -37,70 +37,68 @@ export const CreateSessionPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-      <div style={{ marginBottom: '1rem' }}>
-        <Link to={`/admin/exams/${examId}/sessions`} style={{ color: '#6c757d', textDecoration: 'none' }}>
+    <div className="page-container" style={{ maxWidth: '800px' }}>
+      <div className="page-header" style={{ marginBottom: '1.5rem' }}>
+        <h2 style={{ margin: 0 }}>Create New Session</h2>
+        <Link to={`/admin/exams/${examId}/sessions`} className="btn-secondary" style={{ textDecoration: 'none', border: '1px solid var(--border)', padding: '0.6rem 1.2rem', borderRadius: '8px', color: 'var(--text-muted)' }}>
           &larr; Back to Sessions
         </Link>
       </div>
-      <h2>Create New Session</h2>
       
-      {error && <div style={{ color: 'red', marginBottom: '1rem', padding: '1rem', border: '1px solid red', borderRadius: '4px' }}>{error}</div>}
+      {error && <div className="alert-error">{error}</div>}
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem' }}>Session Number</label>
-          <input 
-            type="number" 
-            value={sessionNumber} 
-            onChange={(e) => setSessionNumber(e.target.value)} 
-            required 
-            min="1"
-            style={{ width: '100%', padding: '0.5rem', boxSizing: 'border-box' }} 
-          />
-        </div>
-        
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem' }}>Session Name (Optional)</label>
-          <input 
-            type="text" 
-            value={name} 
-            onChange={(e) => setName(e.target.value)} 
-            placeholder="e.g. Morning Session"
-            style={{ width: '100%', padding: '0.5rem', boxSizing: 'border-box' }} 
-          />
-        </div>
+      <div className="card">
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div className="form-group">
+            <label>Session Number</label>
+            <input 
+              type="number" 
+              value={sessionNumber} 
+              onChange={(e) => setSessionNumber(e.target.value)} 
+              required 
+              min="1"
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>Session Name (Optional)</label>
+            <input 
+              type="text" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              placeholder="e.g. Morning Session"
+            />
+          </div>
 
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem' }}>Start Date & Time</label>
-          <input 
-            type="datetime-local" 
-            value={startAt} 
-            onChange={(e) => setStartAt(e.target.value)} 
-            required 
-            style={{ width: '100%', padding: '0.5rem', boxSizing: 'border-box' }} 
-          />
-        </div>
+          <div className="form-group">
+            <label>Start Date & Time</label>
+            <input 
+              type="datetime-local" 
+              value={startAt} 
+              onChange={(e) => setStartAt(e.target.value)} 
+              required 
+            />
+          </div>
 
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem' }}>End Date & Time</label>
-          <input 
-            type="datetime-local" 
-            value={endAt} 
-            onChange={(e) => setEndAt(e.target.value)} 
-            required 
-            style={{ width: '100%', padding: '0.5rem', boxSizing: 'border-box' }} 
-          />
-        </div>
+          <div className="form-group">
+            <label>End Date & Time</label>
+            <input 
+              type="datetime-local" 
+              value={endAt} 
+              onChange={(e) => setEndAt(e.target.value)} 
+              required 
+            />
+          </div>
 
-        <button 
-          type="submit" 
-          disabled={isSubmitting}
-          style={{ padding: '0.75rem', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: isSubmitting ? 'not-allowed' : 'pointer', marginTop: '1rem' }}
-        >
-          {isSubmitting ? 'Creating...' : 'Create Session'}
-        </button>
-      </form>
+          <button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="full-width mt-4"
+          >
+            {isSubmitting ? 'Creating...' : 'Create Session'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

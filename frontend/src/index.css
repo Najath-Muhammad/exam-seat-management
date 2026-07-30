@@ -108,12 +108,20 @@ button[style*="background-color: #6c757d"], button[style*="background-color: rgb
 }
 
 /* Base button for those missing specific inline backgrounds */
-button:not([style*="backgroundColor"]):not([style*="background-color"]) {
+button:not([style*="backgroundColor"]):not([style*="background-color"]):not(.btn-tab):not(.nav-link) {
   background-color: var(--primary);
   color: white;
 }
-button:not([style*="backgroundColor"]):not([style*="background-color"]):hover {
+button:not([style*="backgroundColor"]):not([style*="background-color"]):not(.btn-tab):not(.nav-link):hover {
   background-color: var(--primary-hover);
+}
+
+.btn-tab {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.btn-tab:hover {
+  background: rgba(0,0,0,0.02) !important;
 }
 
 /* Inputs and Selects */

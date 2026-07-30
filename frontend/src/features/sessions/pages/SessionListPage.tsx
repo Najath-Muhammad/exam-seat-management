@@ -40,7 +40,7 @@ export const SessionListPage: React.FC = () => {
         <Link 
           to={`/admin/exams/${exam._id}/sessions/create`}
           className="btn-primary"
-          style={{ textDecoration: 'none', backgroundColor: '#059669' }}
+          style={{ textDecoration: 'none', backgroundColor: 'var(--primary)', color: 'white', padding: '0.6rem 1.2rem', borderRadius: '8px', fontWeight: 500 }}
         >
           + Create Session
         </Link>
