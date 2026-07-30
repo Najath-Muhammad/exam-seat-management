@@ -1,3 +1,4 @@
+import { TAny } from '../../../types/any';
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Session, Exam } from '../types/session.types';

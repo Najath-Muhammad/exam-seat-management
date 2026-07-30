@@ -1,3 +1,4 @@
+import { TAny } from '../../../types/any';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Candidate } from '../types/candidate.types';

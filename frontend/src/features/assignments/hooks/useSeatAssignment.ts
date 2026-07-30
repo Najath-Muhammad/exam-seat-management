@@ -1,3 +1,4 @@
+import { TAny } from '../../../types/any';
 import { useState, useEffect, useCallback } from 'react';
 import { seatAssignmentApi } from '../services/seatAssignmentApi';
 import { seatMapApi } from '../services/seatMapApi';

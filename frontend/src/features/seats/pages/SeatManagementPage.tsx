@@ -1,3 +1,4 @@
+import { TAny } from '../../../types/any';
 import React, { useEffect, useState } from 'react';
 import { SeatListResponse, SeatStatus, GenerateSeatsResult } from '../types/seat.types';
 import { seatApi } from '../services/seatApi';

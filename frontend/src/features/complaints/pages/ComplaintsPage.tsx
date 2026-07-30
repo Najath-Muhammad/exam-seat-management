@@ -1,3 +1,4 @@
+import { TAny } from '../../../types/any';
 import React, { useEffect, useState } from 'react';
 import { complaintApi, Complaint } from '../services/complaintApi';
 import { sessionApi } from '../../sessions/services/sessionApi';
