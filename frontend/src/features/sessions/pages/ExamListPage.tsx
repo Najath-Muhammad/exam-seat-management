@@ -26,7 +26,6 @@ export const ExamListPage: React.FC = () => {
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
   return (
-  return (
     <div className="page-container">
       <div className="page-header">
         <h2 style={{ margin: 0 }}>Exams</h2>

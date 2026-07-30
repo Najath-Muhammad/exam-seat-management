@@ -34,7 +34,6 @@ export const SessionListPage: React.FC = () => {
   if (!exam) return <div>Exam not found.</div>;
 
   return (
-  return (
     <div className="page-container">
       <div className="page-header">
         <h2 style={{ margin: 0 }}>Sessions for {exam.name}</h2>

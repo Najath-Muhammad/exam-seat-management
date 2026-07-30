@@ -60,7 +60,6 @@ export const AdminDashboardPage: React.FC = () => {
   if (!data) return <div>No data available</div>;
 
   return (
-  return (
     <div className="page-container">
       <div className="page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
