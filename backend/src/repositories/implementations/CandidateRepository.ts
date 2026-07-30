@@ -1,6 +1,7 @@
 import { ICandidateRepository } from '../interfaces/ICandidateRepository';
 import { CandidateModel, ICandidate } from '../../models/Candidate';
-import { ClientSession } from 'mongoose';
+import { ClientSession } from 'mongoose';import { TAny } from '../../types/any';
+
 
 export class CandidateRepository implements ICandidateRepository {
   async create(candidateData: Partial<ICandidate>): Promise<ICandidate> {
@@ -9,7 +10,7 @@ export class CandidateRepository implements ICandidateRepository {
   }
 
   async createMany(candidatesData: Partial<ICandidate>[]): Promise<ICandidate[]> {
-    return CandidateModel.insertMany(candidatesData) as any;
+    return CandidateModel.insertMany(candidatesData) as TAny;
   }
 
   async findById(id: string): Promise<ICandidate | null> {

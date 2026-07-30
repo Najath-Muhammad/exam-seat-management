@@ -4,7 +4,8 @@ import { ISession } from '../../models/Session';
 import { ExamModel } from '../../models/Exam';
 import { NotFoundError, ConflictError, BadRequestError } from '../../errors';
 import { SessionStatus } from '../../types/session.types';
-import { Types } from 'mongoose';
+import { Types } from 'mongoose';import { TAny } from '../../types/any';
+
 
 export class SessionService implements ISessionService {
   constructor(private readonly sessionRepository: ISessionRepository) {}
@@ -40,7 +41,7 @@ export class SessionService implements ISessionService {
     
     return this.sessionRepository.create({
       ...data,
-      examId: new Types.ObjectId(data.examId) as any,
+      examId: new Types.ObjectId(data.examId) as TAny,
       status: SessionStatus.DRAFT
     });
   }

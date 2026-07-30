@@ -12,7 +12,8 @@ import { AssignmentStatus } from '../../types/seatAssignment.types';
 import { SeatStatus } from '../../types/seat.types';
 import { SessionStatus } from '../../types/session.types';
 import { HistoryAction } from '../../types/assignmentHistory.types';
-import { emitEvent } from '../../socket';
+import { emitEvent } from '../../socket';import { TAny } from '../../types/any';
+
 
 export class SeatAssignmentService implements ISeatAssignmentService {
   constructor(
@@ -55,22 +56,22 @@ export class SeatAssignmentService implements ISeatAssignmentService {
     dbSession.startTransaction();
     try {
       const assignment = await this.assignmentRepository.create({
-        candidateId: data.candidateId as any,
-        sessionId: data.sessionId as any,
-        seatId: data.seatId as any,
+        candidateId: data.candidateId as TAny,
+        sessionId: data.sessionId as TAny,
+        seatId: data.seatId as TAny,
         assignmentNumber,
         status: AssignmentStatus.ASSIGNED,
-        assignedBy: data.adminId as any
+        assignedBy: data.adminId as TAny
       }, dbSession);
 
       await this.historyRepository.create({
-        candidateId: candidate._id as any,
-        examId: session.examId as any,
-        newSessionId: session._id as any,
-        newSeatId: seat._id as any,
+        candidateId: candidate._id as TAny,
+        examId: session.examId as TAny,
+        newSessionId: session._id as TAny,
+        newSeatId: seat._id as TAny,
         action: HistoryAction.INITIAL_ASSIGNMENT,
         reason: 'Manual Initial Assignment',
-        performedBy: data.adminId as any
+        performedBy: data.adminId as TAny
       }, dbSession);
 
       await dbSession.commitTransaction();
@@ -90,7 +91,7 @@ export class SeatAssignmentService implements ISeatAssignmentService {
       });
 
       return assignment;
-    } catch (error: any) {
+    } catch (error: TAny) {
       await dbSession.abortTransaction();
       if (error.code === 11000) {
         throw new ConflictError('Concurrency error: Candidate or Seat was just assigned.');
@@ -112,7 +113,7 @@ export class SeatAssignmentService implements ISeatAssignmentService {
     const { seats: activeSeats } = await this.seatRepository.findAll(0, 10000, { status: SeatStatus.ACTIVE });
     const assignments = await this.assignmentRepository.findBySessionId(sessionId);
     const activeAssignments = assignments.filter(a => a.status === AssignmentStatus.ASSIGNED);
-    const occupiedSeatIds = new Set(activeAssignments.map(a => (a.seatId as any)._id.toString()));
+    const occupiedSeatIds = new Set(activeAssignments.map(a => (a.seatId as TAny)._id.toString()));
 
     return activeSeats.filter(seat => !occupiedSeatIds.has(seat._id.toString()));
   }
@@ -152,29 +153,29 @@ export class SeatAssignmentService implements ISeatAssignmentService {
       await this.assignmentRepository.update(data.assignmentId, {
         status: AssignmentStatus.REASSIGNED,
         reassignedAt: new Date(),
-        reassignedBy: data.adminId as any,
+        reassignedBy: data.adminId as TAny,
         reason: data.reason
       }, dbSession);
 
       const newAssignment = await this.assignmentRepository.create({
         candidateId: oldAssignment.candidateId,
         sessionId: oldAssignment.sessionId,
-        seatId: data.newSeatId as any,
+        seatId: data.newSeatId as TAny,
         assignmentNumber,
         status: AssignmentStatus.ASSIGNED,
-        assignedBy: data.adminId as any
+        assignedBy: data.adminId as TAny
       }, dbSession);
 
       await this.historyRepository.create({
-        candidateId: oldAssignment.candidateId as any,
-        examId: session!.examId as any,
-        oldSessionId: oldAssignment.sessionId as any,
-        newSessionId: oldAssignment.sessionId as any,
-        oldSeatId: oldAssignment.seatId as any,
-        newSeatId: newSeat._id as any,
+        candidateId: oldAssignment.candidateId as TAny,
+        examId: session!.examId as TAny,
+        oldSessionId: oldAssignment.sessionId as TAny,
+        newSessionId: oldAssignment.sessionId as TAny,
+        oldSeatId: oldAssignment.seatId as TAny,
+        newSeatId: newSeat._id as TAny,
         action: HistoryAction.SEAT_REASSIGNED,
         reason: data.reason,
-        performedBy: data.adminId as any
+        performedBy: data.adminId as TAny
       }, dbSession);
 
       await dbSession.commitTransaction();
@@ -187,7 +188,7 @@ export class SeatAssignmentService implements ISeatAssignmentService {
       });
 
       return newAssignment;
-    } catch (error: any) {
+    } catch (error: TAny) {
       await dbSession.abortTransaction();
       if (error.code === 11000) {
         throw new ConflictError('Concurrency error: Seat was just assigned.');
@@ -213,18 +214,18 @@ export class SeatAssignmentService implements ISeatAssignmentService {
       const updated = await this.assignmentRepository.update(data.assignmentId, {
         status: AssignmentStatus.CANCELLED,
         reassignedAt: new Date(),
-        reassignedBy: data.adminId as any,
+        reassignedBy: data.adminId as TAny,
         reason: 'Cancelled by admin'
       }, dbSession);
 
       await this.historyRepository.create({
-        candidateId: oldAssignment.candidateId as any,
-        examId: session!.examId as any,
-        oldSessionId: oldAssignment.sessionId as any,
-        oldSeatId: oldAssignment.seatId as any,
+        candidateId: oldAssignment.candidateId as TAny,
+        examId: session!.examId as TAny,
+        oldSessionId: oldAssignment.sessionId as TAny,
+        oldSeatId: oldAssignment.seatId as TAny,
         action: HistoryAction.ASSIGNMENT_CANCELLED,
         reason: 'Cancelled by admin',
-        performedBy: data.adminId as any
+        performedBy: data.adminId as TAny
       }, dbSession);
 
       await dbSession.commitTransaction();
@@ -298,34 +299,34 @@ export class SeatAssignmentService implements ISeatAssignmentService {
     const dbSession = await mongoose.startSession();
     dbSession.startTransaction();
     try {
-      await this.candidateRepository.update(candidate._id.toString(), { sessionId: newSession._id as any }, dbSession);
+      await this.candidateRepository.update(candidate._id.toString(), { sessionId: newSession._id as TAny }, dbSession);
 
       await this.assignmentRepository.update(data.assignmentId, {
         status: AssignmentStatus.SESSION_TRANSFER,
         reassignedAt: new Date(),
-        reassignedBy: data.adminId as any,
+        reassignedBy: data.adminId as TAny,
         reason: data.reason
       }, dbSession);
 
       const newAssignment = await this.assignmentRepository.create({
         candidateId: oldAssignment.candidateId,
-        sessionId: newSession._id as any,
-        seatId: data.newSeatId as any,
+        sessionId: newSession._id as TAny,
+        seatId: data.newSeatId as TAny,
         assignmentNumber,
         status: AssignmentStatus.ASSIGNED,
-        assignedBy: data.adminId as any
+        assignedBy: data.adminId as TAny
       }, dbSession);
 
       await this.historyRepository.create({
-        candidateId: oldAssignment.candidateId as any,
-        examId: newSession.examId as any,
-        oldSessionId: oldAssignment.sessionId as any,
-        newSessionId: newSession._id as any,
-        oldSeatId: oldAssignment.seatId as any,
-        newSeatId: newSeat._id as any,
+        candidateId: oldAssignment.candidateId as TAny,
+        examId: newSession.examId as TAny,
+        oldSessionId: oldAssignment.sessionId as TAny,
+        newSessionId: newSession._id as TAny,
+        oldSeatId: oldAssignment.seatId as TAny,
+        newSeatId: newSeat._id as TAny,
         action: HistoryAction.SESSION_MOVED,
         reason: data.reason,
-        performedBy: data.adminId as any
+        performedBy: data.adminId as TAny
       }, dbSession);
 
       await dbSession.commitTransaction();
@@ -339,7 +340,7 @@ export class SeatAssignmentService implements ISeatAssignmentService {
       });
 
       return newAssignment;
-    } catch (error: any) {
+    } catch (error: TAny) {
       await dbSession.abortTransaction();
       if (error.code === 11000) {
         throw new ConflictError('Concurrency error: Seat or Candidate was just assigned.');
@@ -357,8 +358,8 @@ export class SeatAssignmentService implements ISeatAssignmentService {
     const { candidates } = await this.candidateRepository.findBySessionId(sessionId, 0, 10000);
     const assignments = await this.assignmentRepository.findBySessionId(sessionId);
     const activeAssignments = assignments.filter(a => a.status === AssignmentStatus.ASSIGNED);
-    const assignedCandidateIds = new Set(activeAssignments.map(a => (a.candidateId as any)._id.toString()));
-    const occupiedSeatIds = new Set(activeAssignments.map(a => (a.seatId as any)._id.toString()));
+    const assignedCandidateIds = new Set(activeAssignments.map(a => (a.candidateId as TAny)._id.toString()));
+    const occupiedSeatIds = new Set(activeAssignments.map(a => (a.seatId as TAny)._id.toString()));
 
     const unassignedCandidates = candidates.filter(c => !assignedCandidateIds.has(c._id.toString()));
     
@@ -381,21 +382,21 @@ export class SeatAssignmentService implements ISeatAssignmentService {
       const candidate = unassignedCandidates[i];
       const seat = availableSeats[i];
       assignmentsToCreate.push({
-        candidateId: candidate._id as any,
-        sessionId: session._id as any,
-        seatId: seat._id as any,
+        candidateId: candidate._id as TAny,
+        sessionId: session._id as TAny,
+        seatId: seat._id as TAny,
         assignmentNumber: `S${session.sessionNumber}-${seat.seatNumber}`,
         status: AssignmentStatus.ASSIGNED,
-        assignedBy: adminId as any
+        assignedBy: adminId as TAny
       });
       historiesToCreate.push({
-        candidateId: candidate._id as any,
-        examId: session.examId as any,
-        newSessionId: session._id as any,
-        newSeatId: seat._id as any,
+        candidateId: candidate._id as TAny,
+        examId: session.examId as TAny,
+        newSessionId: session._id as TAny,
+        newSeatId: seat._id as TAny,
         action: HistoryAction.INITIAL_ASSIGNMENT,
         reason: 'Auto Initial Allocation',
-        performedBy: adminId as any
+        performedBy: adminId as TAny
       });
     }
 
@@ -412,7 +413,7 @@ export class SeatAssignmentService implements ISeatAssignmentService {
           sessionId,
           newlyAssigned
         });
-      } catch (error: any) {
+      } catch (error: TAny) {
         await dbSession.abortTransaction();
         if (error.code === 11000) {
           throw new ConflictError('Concurrency error during auto-assignment. Please try again.');

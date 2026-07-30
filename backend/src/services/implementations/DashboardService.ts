@@ -6,7 +6,8 @@ import { AssignmentStatus } from '../../types/seatAssignment.types';
 import { SeatStatus } from '../../types/seat.types';
 import { ExamModel } from '../../models/Exam';
 import { SessionModel } from '../../models/Session';
-import { CandidateModel } from '../../models/Candidate';
+import { CandidateModel } from '../../models/Candidate';import { TAny } from '../../types/any';
+
 
 export class DashboardService implements IDashboardService {
   constructor(
@@ -28,7 +29,7 @@ export class DashboardService implements IDashboardService {
 
     const validSessionIds = sessions.map(s => s._id.toString());
 
-    let candidateFilter: any = {};
+    let candidateFilter: TAny = {};
     if (sessionId) {
       candidateFilter = { sessionId };
     } else if (examId) {
@@ -43,8 +44,8 @@ export class DashboardService implements IDashboardService {
     const allAssignmentsArrays = await Promise.all(allAssignmentsPromises);
     const activeAssignments = allAssignmentsArrays.flat().filter(a => a.status === AssignmentStatus.ASSIGNED);
 
-    const assignedCandidateIds = new Set(activeAssignments.map(a => (a.candidateId as any)._id.toString()));
-    const assignedSeatsIds = new Set(activeAssignments.map(a => (a.seatId as any)._id.toString()));
+    const assignedCandidateIds = new Set(activeAssignments.map(a => (a.candidateId as TAny)._id.toString()));
+    const assignedSeatsIds = new Set(activeAssignments.map(a => (a.seatId as TAny)._id.toString()));
 
     const assigned = assignedCandidateIds.size;
     const unassigned = totalCandidates - assigned;
@@ -63,7 +64,7 @@ export class DashboardService implements IDashboardService {
       'desc'
     );
 
-    const activity: IRecentActivity[] = recentHistory.map((h: any) => ({
+    const activity: IRecentActivity[] = recentHistory.map((h: TAny) => ({
       candidateName: h.candidateId?.name || 'Unknown',
       registrationNumber: h.candidateId?.registrationNumber || 'Unknown',
       action: h.action,

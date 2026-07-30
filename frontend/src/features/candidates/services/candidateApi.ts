@@ -1,5 +1,6 @@
 import { apiClient } from '../../../services/api/apiClient';
-import { Candidate, CreateCandidateRequest, UpdateCandidateRequest, CandidateListResponse, BulkImportResult } from '../types/candidate.types';
+import { Candidate, CreateCandidateRequest, UpdateCandidateRequest, CandidateListResponse, BulkImportResult } from '../types/candidate.types';import { TAny } from '../../../types/any';
+
 
 export const candidateApi = {
   getCandidatesBySession: async (sessionId: string, page: number = 1, limit: number = 50) => {
@@ -47,7 +48,7 @@ export const candidateApi = {
   },
 
   finalizeCandidates: async (sessionId: string) => {
-    const response = await apiClient.patch<{ success: boolean; data: any }>(
+    const response = await apiClient.patch<{ success: boolean; data: TAny }>(
       `/sessions/${sessionId}/candidates/finalize`
     );
     return response.data.data;

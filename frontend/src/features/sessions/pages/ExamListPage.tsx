@@ -13,7 +13,7 @@ export const ExamListPage: React.FC = () => {
       try {
         const data = await sessionApi.getExams();
         setExams(data);
-      } catch (err: any) {
+      } catch (err: TAny) {
         setError(err.response?.data?.message || 'Failed to load exams');
       } finally {
         setIsLoading(false);

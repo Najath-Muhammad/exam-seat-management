@@ -1,7 +1,8 @@
 import { ISeatAssignmentRepository } from '../interfaces/ISeatAssignmentRepository';
 import { SeatAssignmentModel, ISeatAssignment } from '../../models/SeatAssignment';
 import { AssignmentStatus } from '../../types/seatAssignment.types';
-import { ClientSession } from 'mongoose';
+import { ClientSession } from 'mongoose';import { TAny } from '../../types/any';
+
 
 export class SeatAssignmentRepository implements ISeatAssignmentRepository {
   async create(data: Partial<ISeatAssignment>, session?: ClientSession): Promise<ISeatAssignment> {
@@ -10,7 +11,7 @@ export class SeatAssignmentRepository implements ISeatAssignmentRepository {
   }
 
   async createMany(data: Partial<ISeatAssignment>[], session?: ClientSession): Promise<ISeatAssignment[]> {
-    return SeatAssignmentModel.insertMany(data, { session }) as any;
+    return SeatAssignmentModel.insertMany(data, { session }) as TAny;
   }
 
   async findById(id: string): Promise<ISeatAssignment | null> {
@@ -52,13 +53,13 @@ export class SeatAssignmentRepository implements ISeatAssignmentRepository {
   }
 
   async update(id: string, updateData: Partial<ISeatAssignment>, session?: ClientSession): Promise<ISeatAssignment | null> {
-    const options: any = { new: true };
+    const options: TAny = { new: true };
     if (session) options.session = session;
-    return SeatAssignmentModel.findByIdAndUpdate(id, updateData, options).exec() as any;
+    return SeatAssignmentModel.findByIdAndUpdate(id, updateData, options).exec() as TAny;
   }
 
-  async updateMany(query: any, updateData: any, session?: ClientSession): Promise<any> {
-    const options: any = {};
+  async updateMany(query: TAny, updateData: TAny, session?: ClientSession): Promise<TAny> {
+    const options: TAny = {};
     if (session) options.session = session;
     return SeatAssignmentModel.updateMany(query, updateData, options).exec();
   }

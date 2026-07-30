@@ -1,13 +1,14 @@
+import { TAny } from '../types/any';
 export class AppError extends Error {
   public readonly statusCode: number;
   public readonly isOperational: boolean;
-  public readonly errors?: any;
+  public readonly errors?: TAny;
 
   constructor(
     message: string,
     statusCode: number,
     isOperational: boolean = true,
-    errors?: any
+    errors?: TAny
   ) {
     super(message);
     this.statusCode = statusCode;

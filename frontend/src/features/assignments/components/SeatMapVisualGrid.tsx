@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { SeatMapItem } from '../types/seatMap.types';
+import { SeatMapItem } from '../types/seatMap.types';import { TAny } from '../../../types/any';
+
 
 interface Props {
   seats: SeatMapItem[];
@@ -26,7 +27,7 @@ export const SeatMapVisualGrid: React.FC<Props> = ({ seats, onSeatClick }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <h3 style={{ margin: 0 }}>Visual Seat Map</h3>
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <select value={mapFilter} onChange={e => setMapFilter(e.target.value as any)} style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}>
+          <select value={mapFilter} onChange={e => setMapFilter(e.target.value as TAny)} style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}>
             <option value="ALL">All States</option>
             <option value="OCCUPIED">Occupied</option>
             <option value="VACANT">Vacant</option>

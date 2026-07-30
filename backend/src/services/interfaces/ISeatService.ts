@@ -1,4 +1,5 @@
-import { ISeat } from '../../models/Seat';
+import { ISeat } from '../../models/Seat';import { TAny } from '../../types/any';
+
 
 export interface ICreateSeatDTO {
   seatNumber: string;
@@ -28,7 +29,7 @@ export interface IGenerateSeatsResult {
 
 export interface ISeatService {
   createSeat(data: ICreateSeatDTO): Promise<ISeat>;
-  getSeats(skip?: number, limit?: number, query?: any): Promise<{ seats: ISeat[], total: number }>;
+  getSeats(skip?: number, limit?: number, query?: TAny): Promise<{ seats: ISeat[], total: number }>;
   getSeatById(seatId: string): Promise<ISeat>;
   updateSeat(seatId: string, data: IUpdateSeatDTO): Promise<ISeat>;
   deleteSeat(seatId: string): Promise<void>;

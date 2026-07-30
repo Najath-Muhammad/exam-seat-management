@@ -21,7 +21,7 @@ export const AdminDashboardPage: React.FC = () => {
       ]);
       setData(overviewData);
       setHistory(historyData);
-    } catch (err: any) {
+    } catch (err: TAny) {
       setError(err.response?.data?.message || 'Failed to fetch dashboard data');
     } finally {
       setLoading(false);

@@ -1,17 +1,18 @@
 import jwt from 'jsonwebtoken';
 import { env } from '../config/environment';
 import { IJwtPayload } from '../types/auth.types';
-import { UnauthorizedError } from '../errors';
+import { UnauthorizedError } from '../errors';import { TAny } from '../types/any';
+
 
 export const generateAccessToken = (payload: IJwtPayload): string => {
   return jwt.sign(payload, env.JWT_ACCESS_SECRET, {
-    expiresIn: env.ACCESS_TOKEN_EXPIRES_IN as any,
+    expiresIn: env.ACCESS_TOKEN_EXPIRES_IN as TAny,
   });
 };
 
 export const generateRefreshToken = (payload: IJwtPayload): string => {
   return jwt.sign(payload, env.JWT_REFRESH_SECRET, {
-    expiresIn: env.REFRESH_TOKEN_EXPIRES_IN as any,
+    expiresIn: env.REFRESH_TOKEN_EXPIRES_IN as TAny,
   });
 };
 

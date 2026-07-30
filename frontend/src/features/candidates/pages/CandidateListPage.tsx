@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCandidates } from '../hooks/useCandidates';
 import { CandidateTable } from '../components/CandidateTable';
-import { AddCandidateForm } from '../components/AddCandidateForm';
+import { AddCandidateForm } from '../components/AddCandidateForm';import { TAny } from '../../../types/any';
+
 
 export const CandidateListPage: React.FC = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -20,7 +21,7 @@ export const CandidateListPage: React.FC = () => {
     if (!window.confirm('Once finalized, candidates cannot normally be added or removed from this session.\n\nAre you sure?')) return;
     try {
       await finalizeList();
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to finalize candidate list');
     }
   };
@@ -30,14 +31,14 @@ export const CandidateListPage: React.FC = () => {
     if (!file) return;
     try {
       await importCSV(file);
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Import failed');
     } finally {
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
-  const handleAddSubmit = async (newCandidate: any) => {
+  const handleAddSubmit = async (newCandidate: TAny) => {
     await addCandidate(newCandidate);
     setShowAddForm(false);
   };
@@ -46,7 +47,7 @@ export const CandidateListPage: React.FC = () => {
     if (!window.confirm('Are you sure you want to delete this candidate?')) return;
     try {
       await deleteCandidate(candidateId);
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to delete candidate');
     }
   };
@@ -55,7 +56,7 @@ export const CandidateListPage: React.FC = () => {
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
   if (!session || !data) return null;
 
-  const isFinalized = (session as any).isCandidatesFinalized;
+  const isFinalized = (session as TAny).isCandidatesFinalized;
 
   const filteredCandidates = data.candidates.filter(c => 
     c.registrationNumber.toLowerCase().includes(search.toLowerCase()) ||

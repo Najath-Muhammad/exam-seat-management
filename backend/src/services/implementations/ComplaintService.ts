@@ -1,7 +1,8 @@
 import { IComplaintService } from '../interfaces/IComplaintService';
 import { IComplaintRepository } from '../../repositories/interfaces/IComplaintRepository';
 import { IComplaint, ComplaintStatus } from '../../models/Complaint';
-import { NotFoundError, BadRequestError } from '../../errors';
+import { NotFoundError, BadRequestError } from '../../errors';import { TAny } from '../../types/any';
+
 
 export class ComplaintService implements IComplaintService {
   constructor(private complaintRepository: IComplaintRepository) {}
@@ -10,7 +11,7 @@ export class ComplaintService implements IComplaintService {
     if (!description) {
       throw new BadRequestError('Complaint description is required');
     }
-    return this.complaintRepository.create({ candidateId: candidateId as any, sessionId: sessionId as any, description, status: ComplaintStatus.PENDING });
+    return this.complaintRepository.create({ candidateId: candidateId as TAny, sessionId: sessionId as TAny, description, status: ComplaintStatus.PENDING });
   }
 
   async getComplaintsBySession(sessionId: string): Promise<IComplaint[]> {

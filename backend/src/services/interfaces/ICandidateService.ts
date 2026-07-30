@@ -1,4 +1,5 @@
-import { ICandidate } from '../../models/Candidate';
+import { ICandidate } from '../../models/Candidate';import { TAny } from '../../types/any';
+
 
 export interface ICreateCandidateDTO {
   sessionId: string;
@@ -21,5 +22,5 @@ export interface ICandidateService {
   getCandidateById(candidateId: string): Promise<ICandidate>;
   updateCandidate(candidateId: string, data: IUpdateCandidateDTO): Promise<ICandidate>;
   deleteCandidate(candidateId: string): Promise<void>;
-  bulkImport(sessionId: string, candidates: Omit<ICreateCandidateDTO, 'sessionId'>[]): Promise<{ imported: number; failed: number; errors: any[] }>;
+  bulkImport(sessionId: string, candidates: Omit<ICreateCandidateDTO, 'sessionId'>[]): Promise<{ imported: number; failed: number; errors: TAny[] }>;
 }

@@ -5,7 +5,8 @@ import { ICandidateController } from '../interfaces/ICandidateController';
 import { ICandidateService } from '../../services/interfaces/ICandidateService';
 import { HttpStatus } from '../../constants/statusCodes';
 import { parse } from 'csv-parse';
-import fs from 'fs';
+import fs from 'fs';import { TAny } from '../../types/any';
+
 
 export class CandidateController implements ICandidateController {
   constructor(private readonly candidateService: ICandidateService) {}
@@ -81,7 +82,7 @@ export class CandidateController implements ICandidateController {
         return;
       }
 
-      const records: any[] = [];
+      const records: TAny[] = [];
       const parser = fs.createReadStream(req.file.path).pipe(parse({ columns: true, skip_empty_lines: true }));
 
       parser.on('readable', () => {

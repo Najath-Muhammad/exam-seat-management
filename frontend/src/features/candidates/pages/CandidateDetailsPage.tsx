@@ -16,7 +16,7 @@ export const CandidateDetailsPage: React.FC = () => {
       try {
         const data = await candidateApi.getCandidate(candidateId);
         setCandidate(data);
-      } catch (err: any) {
+      } catch (err: TAny) {
         setError(err.response?.data?.message || 'Failed to load candidate');
       } finally {
         setIsLoading(false);

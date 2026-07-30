@@ -5,7 +5,8 @@ import { ICandidateRepository } from '../../../repositories/interfaces/ICandidat
 import { ISeatRepository } from '../../../repositories/interfaces/ISeatRepository';
 import { ISessionRepository } from '../../../repositories/interfaces/ISessionRepository';
 import { IAssignmentHistoryRepository } from '../../../repositories/interfaces/IAssignmentHistoryRepository';
-import { ConflictError } from '../../../errors';
+import { ConflictError } from '../../../errors';import { TAny } from '../../../types/any';
+
 
 describe('SeatAssignmentService - Transactions & Concurrency', () => {
   let seatAssignmentService: SeatAssignmentService;
@@ -62,7 +63,7 @@ describe('SeatAssignmentService - Transactions & Concurrency', () => {
       commitTransaction: jest.fn(),
       abortTransaction: jest.fn(),
       endSession: jest.fn(),
-    } as any);
+    } as TAny);
   });
 
   afterEach(() => {
@@ -70,14 +71,14 @@ describe('SeatAssignmentService - Transactions & Concurrency', () => {
   });
 
   it('should successfully assign a seat and create history in a transaction', async () => {
-    mockSessionRepo.findById.mockResolvedValue({ _id: 'session1', sessionNumber: 1, examId: 'exam1' } as any);
-    mockCandidateRepo.findById.mockResolvedValue({ _id: 'cand1', sessionId: 'session1' } as any);
-    mockSeatRepo.findById.mockResolvedValue({ _id: 'seat1', status: 'ACTIVE', seatNumber: 'A1' } as any);
+    mockSessionRepo.findById.mockResolvedValue({ _id: 'session1', sessionNumber: 1, examId: 'exam1' } as TAny);
+    mockCandidateRepo.findById.mockResolvedValue({ _id: 'cand1', sessionId: 'session1' } as TAny);
+    mockSeatRepo.findById.mockResolvedValue({ _id: 'seat1', status: 'ACTIVE', seatNumber: 'A1' } as TAny);
     mockAssignmentRepo.findActiveByCandidateAndSession.mockResolvedValue(null);
     mockAssignmentRepo.findActiveBySeatAndSession.mockResolvedValue(null);
 
-    mockAssignmentRepo.create.mockResolvedValue({ _id: 'assign1' } as any);
-    mockHistoryRepo.create.mockResolvedValue({ _id: 'hist1' } as any);
+    mockAssignmentRepo.create.mockResolvedValue({ _id: 'assign1' } as TAny);
+    mockHistoryRepo.create.mockResolvedValue({ _id: 'hist1' } as TAny);
 
     const result = await seatAssignmentService.assignSeat({
       candidateId: 'cand1',
@@ -92,13 +93,13 @@ describe('SeatAssignmentService - Transactions & Concurrency', () => {
   });
 
   it('should abort transaction and rollback if history creation fails', async () => {
-    mockSessionRepo.findById.mockResolvedValue({ _id: 'session1', sessionNumber: 1, examId: 'exam1' } as any);
-    mockCandidateRepo.findById.mockResolvedValue({ _id: 'cand1', sessionId: 'session1' } as any);
-    mockSeatRepo.findById.mockResolvedValue({ _id: 'seat1', status: 'ACTIVE', seatNumber: 'A1' } as any);
+    mockSessionRepo.findById.mockResolvedValue({ _id: 'session1', sessionNumber: 1, examId: 'exam1' } as TAny);
+    mockCandidateRepo.findById.mockResolvedValue({ _id: 'cand1', sessionId: 'session1' } as TAny);
+    mockSeatRepo.findById.mockResolvedValue({ _id: 'seat1', status: 'ACTIVE', seatNumber: 'A1' } as TAny);
     mockAssignmentRepo.findActiveByCandidateAndSession.mockResolvedValue(null);
     mockAssignmentRepo.findActiveBySeatAndSession.mockResolvedValue(null);
 
-    mockAssignmentRepo.create.mockResolvedValue({ _id: 'assign1' } as any);
+    mockAssignmentRepo.create.mockResolvedValue({ _id: 'assign1' } as TAny);
     mockHistoryRepo.create.mockRejectedValue(new Error('DB failure'));
 
     await expect(
@@ -115,13 +116,13 @@ describe('SeatAssignmentService - Transactions & Concurrency', () => {
   });
 
   it('should prevent concurrency when a candidate or seat is already assigned', async () => {
-    mockSessionRepo.findById.mockResolvedValue({ _id: 'session1', sessionNumber: 1, examId: 'exam1' } as any);
-    mockCandidateRepo.findById.mockResolvedValue({ _id: 'cand1', sessionId: 'session1' } as any);
-    mockSeatRepo.findById.mockResolvedValue({ _id: 'seat1', status: 'ACTIVE', seatNumber: 'A1' } as any);
+    mockSessionRepo.findById.mockResolvedValue({ _id: 'session1', sessionNumber: 1, examId: 'exam1' } as TAny);
+    mockCandidateRepo.findById.mockResolvedValue({ _id: 'cand1', sessionId: 'session1' } as TAny);
+    mockSeatRepo.findById.mockResolvedValue({ _id: 'seat1', status: 'ACTIVE', seatNumber: 'A1' } as TAny);
     
     
     mockAssignmentRepo.findActiveByCandidateAndSession.mockResolvedValue(null);
-    mockAssignmentRepo.findActiveBySeatAndSession.mockResolvedValue({ _id: 'existingAssign' } as any);
+    mockAssignmentRepo.findActiveBySeatAndSession.mockResolvedValue({ _id: 'existingAssign' } as TAny);
 
     await expect(
       seatAssignmentService.assignSeat({

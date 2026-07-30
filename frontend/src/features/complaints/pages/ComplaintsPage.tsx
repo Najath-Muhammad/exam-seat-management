@@ -38,7 +38,7 @@ export const ComplaintsPage: React.FC = () => {
       const data = await complaintApi.getAllComplaints();
       setComplaints(data);
       setError(null);
-    } catch (err: any) {
+    } catch (err: TAny) {
       setError(err.response?.data?.message || 'Failed to load complaints');
     } finally {
       setIsLoading(false);
@@ -89,7 +89,7 @@ export const ComplaintsPage: React.FC = () => {
       await complaintApi.registerComplaint(registerForm.candidateId, registerForm.sessionId, registerForm.description);
       setShowRegisterModal(false);
       await fetchComplaints();
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to register complaint');
     } finally { setIsRegistering(false); }
   };
@@ -102,7 +102,7 @@ export const ComplaintsPage: React.FC = () => {
       await complaintApi.updateComplaintStatus(resolveModal.id, resolveModal.status, resolveModal.remarks);
       await fetchComplaints();
       setResolveModal(null);
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to update complaint');
     } finally {
       setIsSaving(false);

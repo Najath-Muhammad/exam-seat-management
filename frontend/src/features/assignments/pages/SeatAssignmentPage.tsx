@@ -57,7 +57,7 @@ export const SeatAssignmentPage: React.FC = () => {
       setSelectedCandidateId('');
       setSelectedSeatId('');
       setSelectedSeatDetails(null);
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to assign seat');
     }
   };
@@ -69,7 +69,7 @@ export const SeatAssignmentPage: React.FC = () => {
       setShowReassignModal(false);
       setReassignData({ assignmentId: '', newSeatId: '', reason: '' });
       setSelectedSeatDetails(null);
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to reassign seat');
     }
   };
@@ -79,7 +79,7 @@ export const SeatAssignmentPage: React.FC = () => {
       await loadTargetSessions(sessionId!);
       setMoveSessionData({ assignmentId, newSessionId: '', newSeatId: '', reason: '' });
       setShowMoveSessionModal(true);
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to load sessions');
     }
   };
@@ -92,7 +92,7 @@ export const SeatAssignmentPage: React.FC = () => {
       alert('Candidate successfully moved to the new session.');
       setShowMoveSessionModal(false);
       setSelectedSeatDetails(null);
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to move candidate');
     }
   };
@@ -102,7 +102,7 @@ export const SeatAssignmentPage: React.FC = () => {
     if (!newSessionId) return;
     try {
       await loadTargetSeats(newSessionId);
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to load available seats');
     }
   };
@@ -113,7 +113,7 @@ export const SeatAssignmentPage: React.FC = () => {
     if (!window.confirm(confirmMessage)) return;
     try {
       await runInitialAllocation();
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Initial allocation failed');
     }
   };
@@ -122,7 +122,7 @@ export const SeatAssignmentPage: React.FC = () => {
     if (!window.confirm('Are you sure you want to cancel this assignment?')) return;
     try {
       await cancelAssignment(assignmentId);
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to cancel assignment');
     }
   };
@@ -134,7 +134,7 @@ export const SeatAssignmentPage: React.FC = () => {
       alert('Complaint registered successfully.');
       setShowComplaintModal(false);
       setComplaintData({ candidateId: '', description: '' });
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to register complaint');
     }
   };

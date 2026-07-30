@@ -6,7 +6,8 @@ import { ISeatRepository } from '../../repositories/interfaces/ISeatRepository';
 import { ISessionRepository } from '../../repositories/interfaces/ISessionRepository';
 import { NotFoundError } from '../../errors';
 import { AssignmentStatus } from '../../types/seatAssignment.types';
-import { SeatStatus } from '../../types/seat.types';
+import { SeatStatus } from '../../types/seat.types';import { TAny } from '../../types/any';
+
 
 export class SeatMapService implements ISeatMapService {
   constructor(
@@ -29,9 +30,9 @@ export class SeatMapService implements ISeatMapService {
     const activeAssignments = allAssignments.filter(a => a.status === AssignmentStatus.ASSIGNED);
     
     
-    const assignmentBySeatId = new Map(activeAssignments.map(a => [(a.seatId as any)._id.toString(), a]));
+    const assignmentBySeatId = new Map(activeAssignments.map(a => [(a.seatId as TAny)._id.toString(), a]));
     const candidateById = new Map(allCandidates.map(c => [c._id.toString(), c]));
-    const assignedCandidateIds = new Set(activeAssignments.map(a => (a.candidateId as any)._id.toString()));
+    const assignedCandidateIds = new Set(activeAssignments.map(a => (a.candidateId as TAny)._id.toString()));
 
     let occupiedSeats = 0;
     let vacantSeats = 0;
@@ -67,8 +68,8 @@ export class SeatMapService implements ISeatMapService {
       };
 
       if (assignment) {
-        const candidateIdStr = (assignment.candidateId as any)._id.toString();
-        const cand = candidateById.get(candidateIdStr) || (assignment.candidateId as any);
+        const candidateIdStr = (assignment.candidateId as TAny)._id.toString();
+        const cand = candidateById.get(candidateIdStr) || (assignment.candidateId as TAny);
         
         item.candidate = {
           candidateId: cand._id.toString(),
@@ -80,7 +81,7 @@ export class SeatMapService implements ISeatMapService {
           assignmentId: assignment._id.toString(),
           assignmentNumber: assignment.assignmentNumber,
           assignedAt: assignment.assignedAt,
-          assignedBy: (assignment.assignedBy as any).name || (assignment.assignedBy as any).toString()
+          assignedBy: (assignment.assignedBy as TAny).name || (assignment.assignedBy as TAny).toString()
         };
       }
 
@@ -128,8 +129,8 @@ export class SeatMapService implements ISeatMapService {
     const seatMap = new Map(allSeats.map(s => [s._id.toString(), s]));
 
     for (const a of activeAssignments) {
-      const candId = (a.candidateId as any)._id.toString();
-      const stId = (a.seatId as any)._id.toString();
+      const candId = (a.candidateId as TAny)._id.toString();
+      const stId = (a.seatId as TAny)._id.toString();
 
       candidateCounts.set(candId, (candidateCounts.get(candId) || 0) + 1);
       seatCounts.set(stId, (seatCounts.get(stId) || 0) + 1);

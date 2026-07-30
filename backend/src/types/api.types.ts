@@ -1,8 +1,9 @@
-export interface ApiResponse<T = any> {
+import { TAny } from './any';
+export interface ApiResponse<T = TAny> {
   success: boolean;
   message: string;
   data?: T;
-  errors?: any;
+  errors?: TAny;
 }
 
 export interface PaginatedData<T> {

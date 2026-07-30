@@ -20,7 +20,7 @@ export const SessionListPage: React.FC = () => {
         ]);
         setExam(examData);
         setSessions(sessionsData);
-      } catch (err: any) {
+      } catch (err: TAny) {
         setError(err.response?.data?.message || 'Failed to load sessions');
       } finally {
         setIsLoading(false);

@@ -5,7 +5,8 @@ import { IAuthController } from '../interfaces/IAuthController';
 import { IAuthService } from '../../services/interfaces/IAuthService';
 import { HttpStatus } from '../../constants/statusCodes';
 import { env } from '../../config/environment';
-import { IAuthenticatedRequest } from '../../types/auth.types';
+import { IAuthenticatedRequest } from '../../types/auth.types';import { TAny } from '../../types/any';
+
 
 export class AuthController implements IAuthController {
   constructor(private readonly authService: IAuthService) {}
@@ -80,7 +81,7 @@ export class AuthController implements IAuthController {
         
         
         import('jsonwebtoken').then(({ decode }) => {
-          const decoded = decode(refreshToken) as any;
+          const decoded = decode(refreshToken) as TAny;
           if (decoded && decoded.userId) {
             this.authService.logout(decoded.userId, refreshToken).catch(console.error);
           }

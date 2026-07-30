@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { HttpStatusCode } from '../constants/statusCodes';
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = TAny> {
   success: boolean;
   message: string;
   data?: T;

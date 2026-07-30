@@ -2,7 +2,8 @@ import { ISeatService, ICreateSeatDTO, IUpdateSeatDTO, IGenerateSeatsDTO, IGener
 import { ISeatRepository } from '../../repositories/interfaces/ISeatRepository';
 import { ISeat } from '../../models/Seat';
 import { NotFoundError, ConflictError, BadRequestError } from '../../errors';
-import { SeatStatus } from '../../types/seat.types';
+import { SeatStatus } from '../../types/seat.types';import { TAny } from '../../types/any';
+
 
 export class SeatService implements ISeatService {
   constructor(private readonly seatRepository: ISeatRepository) {}
@@ -19,7 +20,7 @@ export class SeatService implements ISeatService {
     });
   }
 
-  async getSeats(skip: number = 0, limit: number = 50, query: any = {}): Promise<{ seats: ISeat[], total: number }> {
+  async getSeats(skip: number = 0, limit: number = 50, query: TAny = {}): Promise<{ seats: ISeat[], total: number }> {
     return this.seatRepository.findAll(skip, limit, query);
   }
 

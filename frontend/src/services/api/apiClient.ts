@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { getToken, setToken } from '../../features/auth/services/tokenManager';
+import { getToken, setToken } from '../../features/auth/services/tokenManager';import { TAny } from '../../types/any';
+
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
@@ -23,10 +24,10 @@ let isRefreshing = false;
 
 let failedQueue: Array<{
   resolve: (value?: unknown) => void;
-  reject: (reason?: any) => void;
+  reject: (reason?: TAny) => void;
 }> = [];
 
-const processQueue = (error: any, token: string | null = null) => {
+const processQueue = (error: TAny, token: string | null = null) => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);

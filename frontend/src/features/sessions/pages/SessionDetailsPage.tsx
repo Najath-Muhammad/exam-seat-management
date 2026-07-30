@@ -18,7 +18,7 @@ export const SessionDetailsPage: React.FC = () => {
       try {
         const data = await sessionApi.getSession(sessionId);
         setSession(data);
-      } catch (err: any) {
+      } catch (err: TAny) {
         setError(err.response?.data?.message || 'Failed to load session');
       } finally {
         setIsLoading(false);
@@ -34,7 +34,7 @@ export const SessionDetailsPage: React.FC = () => {
       try {
         await sessionApi.deleteSession(session._id);
         navigate(`/admin/exams/${session.examId}/sessions`);
-      } catch (err: any) {
+      } catch (err: TAny) {
         setError(err.response?.data?.message || 'Failed to delete session');
         setIsDeleting(false);
       }

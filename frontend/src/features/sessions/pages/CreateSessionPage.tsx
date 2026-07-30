@@ -29,7 +29,7 @@ export const CreateSessionPage: React.FC = () => {
         endAt: new Date(endAt).toISOString(),
       });
       navigate(`/admin/exams/${examId}/sessions`);
-    } catch (err: any) {
+    } catch (err: TAny) {
       setError(err.response?.data?.message || 'Failed to create session');
     } finally {
       setIsSubmitting(false);

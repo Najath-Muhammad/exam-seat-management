@@ -3,7 +3,8 @@ import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { ISeatController } from '../interfaces/ISeatController';
 import { ISeatService } from '../../services/interfaces/ISeatService';
-import { HttpStatus } from '../../constants/statusCodes';
+import { HttpStatus } from '../../constants/statusCodes';import { TAny } from '../../types/any';
+
 
 export class SeatController implements ISeatController {
   constructor(private readonly seatService: ISeatService) {}
@@ -23,7 +24,7 @@ export class SeatController implements ISeatController {
       const limit = parseInt(req.query.limit as string) || 50;
       const skip = (page - 1) * limit;
       
-      const query: any = {};
+      const query: TAny = {};
       if (req.query.status) query.status = req.query.status;
       if (req.query.row) query.row = req.query.row;
 

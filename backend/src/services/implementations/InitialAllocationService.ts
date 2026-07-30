@@ -6,7 +6,8 @@ import { ISeatRepository } from '../../repositories/interfaces/ISeatRepository';
 import { ISessionRepository } from '../../repositories/interfaces/ISessionRepository';
 import { NotFoundError, ConflictError } from '../../errors';
 import { AssignmentStatus } from '../../types/seatAssignment.types';
-import { SeatStatus } from '../../types/seat.types';
+import { SeatStatus } from '../../types/seat.types';import { TAny } from '../../types/any';
+
 
 export class InitialAllocationService implements IInitialAllocationService {
   constructor(
@@ -23,8 +24,8 @@ export class InitialAllocationService implements IInitialAllocationService {
     const { candidates } = await this.candidateRepository.findBySessionId(sessionId, 0, 10000);
     const assignments = await this.assignmentRepository.findBySessionId(sessionId);
     const activeAssignments = assignments.filter(a => a.status === AssignmentStatus.ASSIGNED);
-    const assignedCandidateIds = new Set(activeAssignments.map(a => (a.candidateId as any)._id.toString()));
-    const occupiedSeatIds = new Set(activeAssignments.map(a => (a.seatId as any)._id.toString()));
+    const assignedCandidateIds = new Set(activeAssignments.map(a => (a.candidateId as TAny)._id.toString()));
+    const occupiedSeatIds = new Set(activeAssignments.map(a => (a.seatId as TAny)._id.toString()));
 
     const unassignedCandidates = candidates.filter(c => !assignedCandidateIds.has(c._id.toString()));
     
@@ -58,12 +59,12 @@ export class InitialAllocationService implements IInitialAllocationService {
       const candidate = unassignedCandidates[i];
       const seat = availableSeats[i];
       assignmentsToCreate.push({
-        candidateId: candidate._id as any,
-        sessionId: session._id as any,
-        seatId: seat._id as any,
+        candidateId: candidate._id as TAny,
+        sessionId: session._id as TAny,
+        seatId: seat._id as TAny,
         assignmentNumber: `S${session.sessionNumber}-${seat.seatNumber}`,
         status: AssignmentStatus.ASSIGNED,
-        assignedBy: adminId as any
+        assignedBy: adminId as TAny
       });
     }
 
@@ -74,7 +75,7 @@ export class InitialAllocationService implements IInitialAllocationService {
         await this.assignmentRepository.createMany(assignmentsToCreate, dbSession);
         await dbSession.commitTransaction();
         newlyAllocated = assignmentsToCreate.length;
-      } catch (error: any) {
+      } catch (error: TAny) {
         await dbSession.abortTransaction();
         if (error.code === 11000) {
           throw new ConflictError('Concurrency error during initial allocation. Please try again.');

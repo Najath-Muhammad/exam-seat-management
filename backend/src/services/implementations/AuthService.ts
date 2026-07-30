@@ -3,7 +3,8 @@ import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 import { UnauthorizedError } from '../../errors';
 import { comparePassword } from '../../utils/password';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../../utils/token';
-import { redisClient } from '../../config/redis';
+import { redisClient } from '../../config/redis';import { TAny } from '../../types/any';
+
 
 export class AuthService implements IAuthService {
   constructor(private readonly userRepository: IUserRepository) {}
@@ -92,7 +93,7 @@ export class AuthService implements IAuthService {
     await redisClient.del(redisKey);
   }
 
-  async getUserById(userId: string): Promise<any> {
+  async getUserById(userId: string): Promise<TAny> {
     const user = await this.userRepository.findById(userId);
     if (!user || !user.isActive) {
       throw new UnauthorizedError('User not found or inactive');

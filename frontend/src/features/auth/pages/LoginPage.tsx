@@ -19,7 +19,7 @@ export const LoginPage: React.FC = () => {
     try {
       await login({ email, password });
       navigate('/admin');
-    } catch (err: any) {
+    } catch (err: TAny) {
       if (err.response && err.response.data && err.response.data.message) {
         
         if (err.response.data.errors && Array.isArray(err.response.data.errors)) {

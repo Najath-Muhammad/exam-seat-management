@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { candidateApi } from '../services/candidateApi';
 import { sessionApi } from '../../sessions/services/sessionApi';
 import { CandidateListResponse, BulkImportResult } from '../types/candidate.types';
-import { Session } from '../../sessions/types/session.types';
+import { Session } from '../../sessions/types/session.types';import { TAny } from '../../../types/any';
+
 
 export const useCandidates = (sessionId: string | undefined) => {
   const [session, setSession] = useState<Session | null>(null);
@@ -27,7 +28,7 @@ export const useCandidates = (sessionId: string | undefined) => {
       setSession(sessionData);
       setData(candidatesData);
       setError(null);
-    } catch (err: any) {
+    } catch (err: TAny) {
       setError(err.response?.data?.message || 'Failed to load candidates');
     } finally {
       setIsLoading(false);
@@ -62,7 +63,7 @@ export const useCandidates = (sessionId: string | undefined) => {
     }
   };
 
-  const addCandidate = async (newCandidate: any) => {
+  const addCandidate = async (newCandidate: TAny) => {
     if (!sessionId) return;
     await candidateApi.createCandidate(sessionId, newCandidate);
     await fetchData();

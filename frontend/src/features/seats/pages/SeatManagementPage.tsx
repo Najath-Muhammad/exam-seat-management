@@ -31,7 +31,7 @@ export const SeatManagementPage: React.FC = () => {
       const result = await seatApi.getSeats(page, limit, filterStatus);
       setData(result);
       setError(null);
-    } catch (err: any) {
+    } catch (err: TAny) {
       setError(err.response?.data?.message || 'Failed to load seats');
     } finally {
       setIsLoading(false);
@@ -56,7 +56,7 @@ export const SeatManagementPage: React.FC = () => {
       });
       setGenResult(result);
       fetchSeats();
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Generation failed');
     } finally {
       setIsGenerating(false);
@@ -75,7 +75,7 @@ export const SeatManagementPage: React.FC = () => {
       setShowAddForm(false);
       setNewSeat({ seatNumber: '', row: '', column: '' });
       fetchSeats();
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to add seat');
     } finally {
       setIsSaving(false);
@@ -87,7 +87,7 @@ export const SeatManagementPage: React.FC = () => {
     try {
       await seatApi.deleteSeat(seatId);
       fetchSeats();
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to delete seat');
     }
   };
@@ -96,7 +96,7 @@ export const SeatManagementPage: React.FC = () => {
     try {
       await seatApi.updateSeat(seatId, { status });
       fetchSeats();
-    } catch (err: any) {
+    } catch (err: TAny) {
       alert(err.response?.data?.message || 'Failed to update status');
     }
   };

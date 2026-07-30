@@ -1,7 +1,8 @@
 import { Server as SocketServer, Socket } from 'socket.io';
 import { Server as HttpServer } from 'http';
 import jwt from 'jsonwebtoken';
-import { UserRole } from './types/auth.types';
+import { UserRole } from './types/auth.types';import { TAny } from './types/any';
+
 
 export let io: SocketServer;
 
@@ -22,7 +23,7 @@ export const initializeSocket = (httpServer: HttpServer) => {
     }
 
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as any;
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as TAny;
       
       
       if (decoded.role !== UserRole.ADMIN) {
@@ -48,7 +49,7 @@ export const initializeSocket = (httpServer: HttpServer) => {
   });
 };
 
-export const emitEvent = (event: string, payload: any, room: string = 'admin-room') => {
+export const emitEvent = (event: string, payload: TAny, room: string = 'admin-room') => {
   if (io) {
     io.to(room).emit(event, payload);
   }

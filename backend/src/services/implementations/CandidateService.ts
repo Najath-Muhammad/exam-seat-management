@@ -4,7 +4,8 @@ import { ISessionRepository } from '../../repositories/interfaces/ISessionReposi
 import { ICandidate } from '../../models/Candidate';
 import { NotFoundError, ConflictError, BadRequestError } from '../../errors';
 import { CandidateStatus } from '../../types/candidate.types';
-import { Types } from 'mongoose';
+import { Types } from 'mongoose';import { TAny } from '../../types/any';
+
 
 export class CandidateService implements ICandidateService {
   constructor(
@@ -32,7 +33,7 @@ export class CandidateService implements ICandidateService {
 
     return this.candidateRepository.create({
       ...data,
-      sessionId: new Types.ObjectId(data.sessionId) as any,
+      sessionId: new Types.ObjectId(data.sessionId) as TAny,
       status: CandidateStatus.REGISTERED
     });
   }
@@ -74,7 +75,7 @@ export class CandidateService implements ICandidateService {
     await this.candidateRepository.delete(candidateId);
   }
 
-  async bulkImport(sessionId: string, candidates: Omit<ICreateCandidateDTO, 'sessionId'>[]): Promise<{ imported: number; failed: number; errors: any[] }> {
+  async bulkImport(sessionId: string, candidates: Omit<ICreateCandidateDTO, 'sessionId'>[]): Promise<{ imported: number; failed: number; errors: TAny[] }> {
     const session = await this.sessionRepository.findById(sessionId);
     if (!session) throw new NotFoundError('Session not found');
 
@@ -89,7 +90,7 @@ export class CandidateService implements ICandidateService {
 
     let imported = 0;
     let failed = 0;
-    const errors: any[] = [];
+    const errors: TAny[] = [];
 
     
     
@@ -114,10 +115,10 @@ export class CandidateService implements ICandidateService {
 
         validCandidatesToInsert.push({
           ...row,
-          sessionId: new Types.ObjectId(sessionId) as any,
+          sessionId: new Types.ObjectId(sessionId) as TAny,
           status: CandidateStatus.REGISTERED
         });
-      } catch (err: any) {
+      } catch (err: TAny) {
         failed++;
         errors.push({ row: i + 1, registrationNumber: row.registrationNumber, error: err.message });
       }

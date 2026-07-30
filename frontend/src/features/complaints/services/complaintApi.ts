@@ -1,9 +1,10 @@
-import { apiClient } from '../../../services/api/apiClient';
+import { apiClient } from '../../../services/api/apiClient';import { TAny } from '../../../types/any';
+
 
 export interface Complaint {
   _id: string;
-  candidateId: any;
-  sessionId: any;
+  candidateId: TAny;
+  sessionId: TAny;
   description: string;
   status: 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'REJECTED';
   resolutionRemarks?: string;

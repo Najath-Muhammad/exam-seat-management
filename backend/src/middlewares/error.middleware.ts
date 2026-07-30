@@ -4,7 +4,8 @@ import { logger } from '../utils/logger';
 import { env } from '../config/environment';
 import { HttpStatus } from '../constants/statusCodes';
 import { AppMessages } from '../constants/messages';
-import { ApiResponse } from '../types/api.types';
+import { ApiResponse } from '../types/api.types';import { TAny } from '../types/any';
+
 
 export const errorMiddleware = (
   err: Error,
@@ -22,7 +23,7 @@ export const errorMiddleware = (
       message: err.message,
       errors: err.errors,
       ...(env.NODE_ENV === 'development' && { stack: err.stack }),
-    } as any);
+    } as TAny);
     return;
   }
 
@@ -36,5 +37,5 @@ export const errorMiddleware = (
       errors: err.message,
       stack: err.stack 
     }),
-  } as any);
+  } as TAny);
 };

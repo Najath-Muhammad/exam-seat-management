@@ -1,10 +1,11 @@
 import React, { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { AuthState } from '../types/auth.types';
 import { authApi } from '../services/authApi';
-import { setToken } from '../services/tokenManager';
+import { setToken } from '../services/tokenManager';import { TAny } from '../../../types/any';
+
 
 interface AuthContextType extends AuthState {
-  login: (data: any) => Promise<void>;
+  login: (data: TAny) => Promise<void>;
   logout: () => Promise<void>;
 }
 

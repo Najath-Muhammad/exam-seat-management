@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react';import { TAny } from '../../../types/any';
+
 
 interface Props {
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (data: TAny) => Promise<void>;
   onCancel: () => void;
 }
 
@@ -17,7 +18,7 @@ export const AddCandidateForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     try {
       await onSubmit(newCandidate);
       setNewCandidate({ registrationNumber: '', name: '', email: '', phone: '' });
-    } catch (err: any) {
+    } catch (err: TAny) {
       setAddError(err.response?.data?.message || 'Failed to add candidate');
     } finally {
       setIsAdding(false);

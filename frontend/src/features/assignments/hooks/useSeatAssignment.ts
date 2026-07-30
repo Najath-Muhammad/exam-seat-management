@@ -33,7 +33,7 @@ export const useSeatAssignment = (examId: string | undefined, sessionId: string 
       setRecoveryStatus(recStatus);
       setHistoryAssignments(assigData);
       setError(null);
-    } catch (err: any) {
+    } catch (err: TAny) {
       setError(err.response?.data?.message || 'Failed to load seat map data');
     } finally {
       setIsLoading(false);

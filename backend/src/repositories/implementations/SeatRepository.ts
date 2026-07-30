@@ -1,5 +1,6 @@
 import { ISeatRepository } from '../interfaces/ISeatRepository';
-import { SeatModel, ISeat } from '../../models/Seat';
+import { SeatModel, ISeat } from '../../models/Seat';import { TAny } from '../../types/any';
+
 
 export class SeatRepository implements ISeatRepository {
   async create(seatData: Partial<ISeat>): Promise<ISeat> {
@@ -8,7 +9,7 @@ export class SeatRepository implements ISeatRepository {
   }
 
   async createMany(seatsData: Partial<ISeat>[]): Promise<ISeat[]> {
-    return SeatModel.insertMany(seatsData) as any;
+    return SeatModel.insertMany(seatsData) as TAny;
   }
 
   async findById(id: string): Promise<ISeat | null> {
@@ -19,7 +20,7 @@ export class SeatRepository implements ISeatRepository {
     return SeatModel.findOne({ seatNumber }).exec();
   }
 
-  async findAll(skip: number = 0, limit: number = 50, query: any = {}): Promise<{ seats: ISeat[], total: number }> {
+  async findAll(skip: number = 0, limit: number = 50, query: TAny = {}): Promise<{ seats: ISeat[], total: number }> {
     const [seats, total] = await Promise.all([
       SeatModel.find(query).sort({ seatNumber: 1 }).skip(skip).limit(limit).exec(),
       SeatModel.countDocuments(query).exec()
