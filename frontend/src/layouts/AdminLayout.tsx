@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useNavigate, Link } from 'react-router-dom';
+import { Outlet, useNavigate, NavLink } from 'react-router-dom';
 import { useAuth } from '../features/auth/hooks/useAuth';
 
 export const AdminLayout: React.FC = () => {
@@ -11,44 +11,64 @@ export const AdminLayout: React.FC = () => {
     navigate('/login');
   };
 
+  const getInitials = (name: string) => {
+    return name.charAt(0).toUpperCase();
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'sans-serif' }}>
-      {/* Navbar */}
-      <header style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem 2rem', backgroundColor: '#343a40', color: 'white' }}>
-        <h1 style={{ margin: 0, fontSize: '1.25rem' }}>Exam System Admin</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span>Welcome, {user?.name || 'Admin'}</span>
+    <div className="app-layout">
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <div className="sidebar-header">
+          <h1>⚡ ExamSystem</h1>
+        </div>
+
+        <nav className="sidebar-nav">
+          <div className="nav-label">Main Menu</div>
+          <NavLink 
+            to="/admin/dashboard" 
+            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
+          >
+            Dashboard Overview
+          </NavLink>
+          <NavLink 
+            to="/admin/exams" 
+            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
+          >
+            Exams & Sessions
+          </NavLink>
+          <NavLink 
+            to="/admin/seats" 
+            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
+          >
+            Physical Seats
+          </NavLink>
+        </nav>
+
+        <div className="sidebar-footer">
+          <div className="user-profile">
+            <div className="user-avatar">
+              {getInitials(user?.name || 'A')}
+            </div>
+            <div className="user-info">
+              <span className="user-name">{user?.name || 'Administrator'}</span>
+              <span className="user-role">{user?.role || 'Admin'}</span>
+            </div>
+          </div>
           <button 
             onClick={handleLogout}
-            style={{ padding: '0.5rem 1rem', cursor: 'pointer', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px' }}
+            className="full-width btn-secondary"
+            style={{ backgroundColor: 'transparent', border: '1px solid var(--border)', color: 'var(--text-main)', marginTop: '0.5rem' }}
           >
-            Logout
+            Sign Out
           </button>
         </div>
-      </header>
+      </aside>
 
-      <div style={{ display: 'flex', flex: 1 }}>
-        {/* Sidebar */}
-        <aside style={{ width: '250px', backgroundColor: '#f8f9fa', padding: '1rem', borderRight: '1px solid #dee2e6' }}>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            <li style={{ marginBottom: '1rem', fontWeight: 'bold' }}>Navigation</li>
-            <li style={{ marginBottom: '0.5rem' }}>
-              <Link to="/admin/dashboard" style={{ textDecoration: 'none', color: '#007bff' }}>Dashboard Overview</Link>
-            </li>
-            <li style={{ marginBottom: '0.5rem' }}>
-              <Link to="/admin/exams" style={{ textDecoration: 'none', color: '#007bff' }}>Exams & Sessions</Link>
-            </li>
-            <li style={{ marginBottom: '0.5rem' }}>
-              <Link to="/admin/seats" style={{ textDecoration: 'none', color: '#007bff' }}>Physical Seats</Link>
-            </li>
-          </ul>
-        </aside>
-
-        {/* Main Content */}
-        <main style={{ flex: 1, padding: '2rem', backgroundColor: '#ffffff' }}>
-          <Outlet />
-        </main>
-      </div>
+      {/* Main Content */}
+      <main className="main-content">
+        <Outlet />
+      </main>
     </div>
   );
 };

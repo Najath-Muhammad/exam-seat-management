@@ -13,7 +13,11 @@ import { env } from './environment';
  */
 export const connectDatabase = async (): Promise<void> => {
   try {
-    await mongoose.connect(env.MONGO_URI);
+    await mongoose.connect(env.MONGO_URI, {
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+    });
+    // Disable buffering globally so requests fail fast if DB drops
+    mongoose.set('bufferCommands', false);
     console.log('[Database] MongoDB connected successfully.');
   } catch (error) {
     console.error('[Database] Connection failed:', error);

@@ -31,9 +31,11 @@ export class AuthController implements IAuthController {
 
   async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      console.log('[DEBUG] login request received');
       const { email, password } = req.body;
+      console.log('[DEBUG] calling authService.login');
       const result = await this.authService.login(email, password);
-
+      console.log('[DEBUG] setting refresh cookie');
       this.setRefreshCookie(res, result.refreshToken);
 
       sendResponse(res, HttpStatus.OK, AppMessages.LOGIN_SUCCESSFUL, {
