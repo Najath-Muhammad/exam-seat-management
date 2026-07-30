@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { complaintApi, Complaint } from '../services/complaintApi';
+import { sessionApi } from '../../sessions/services/sessionApi';
+import { candidateApi } from '../../candidates/services/candidateApi';
+import { Exam, Session } from '../../sessions/types/session.types';
+import { Candidate } from '../../candidates/types/candidate.types';
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
   PENDING:     { bg: '#fef3c7', color: '#92400e' },
@@ -18,6 +22,16 @@ export const ComplaintsPage: React.FC = () => {
   const [resolveModal, setResolveModal] = useState<{ id: string; status: string; remarks: string } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
+  // Register complaint modal state
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [exams, setExams] = useState<Exam[]>([]);
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [registerForm, setRegisterForm] = useState({ examId: '', sessionId: '', candidateId: '', description: '' });
+  const [isLoadingSessions, setIsLoadingSessions] = useState(false);
+  const [isLoadingCandidates, setIsLoadingCandidates] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
+
   const fetchComplaints = async () => {
     setIsLoading(true);
     try {
@@ -32,6 +46,53 @@ export const ComplaintsPage: React.FC = () => {
   };
 
   useEffect(() => { fetchComplaints(); }, []);
+
+  // Load exams when register modal opens
+  const openRegisterModal = async () => {
+    try {
+      const data = await sessionApi.getExams();
+      setExams(data);
+    } catch { /* silently fail */ }
+    setRegisterForm({ examId: '', sessionId: '', candidateId: '', description: '' });
+    setSessions([]);
+    setCandidates([]);
+    setShowRegisterModal(true);
+  };
+
+  const handleExamChange = async (examId: string) => {
+    setRegisterForm(f => ({ ...f, examId, sessionId: '', candidateId: '' }));
+    setSessions([]); setCandidates([]);
+    if (!examId) return;
+    setIsLoadingSessions(true);
+    try {
+      const data = await sessionApi.getSessions(examId);
+      setSessions(data);
+    } catch { /* ignore */ } finally { setIsLoadingSessions(false); }
+  };
+
+  const handleSessionChange = async (sessionId: string) => {
+    setRegisterForm(f => ({ ...f, sessionId, candidateId: '' }));
+    setCandidates([]);
+    if (!sessionId) return;
+    setIsLoadingCandidates(true);
+    try {
+      const result = await candidateApi.getCandidatesBySession(sessionId, 1, 200);
+      setCandidates(result.candidates);
+    } catch { /* ignore */ } finally { setIsLoadingCandidates(false); }
+  };
+
+  const handleRegisterComplaint = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!registerForm.candidateId || !registerForm.sessionId || !registerForm.description) return;
+    setIsRegistering(true);
+    try {
+      await complaintApi.registerComplaint(registerForm.candidateId, registerForm.sessionId, registerForm.description);
+      setShowRegisterModal(false);
+      await fetchComplaints();
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Failed to register complaint');
+    } finally { setIsRegistering(false); }
+  };
 
   const handleStatusUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,7 +142,10 @@ export const ComplaintsPage: React.FC = () => {
           <h2 style={{ margin: 0 }}>Complaints</h2>
           <p className="text-muted" style={{ margin: '0.25rem 0 0' }}>Manage and resolve candidate complaints</p>
         </div>
-        <button onClick={fetchComplaints} style={{ backgroundColor: 'var(--text-muted)' }}>↻ Refresh</button>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <button onClick={openRegisterModal} style={{ backgroundColor: 'var(--primary)' }}>+ Register Complaint</button>
+          <button onClick={fetchComplaints} style={{ backgroundColor: 'transparent', border: '1px solid var(--border)', color: 'var(--text-muted)' }}>↻ Refresh</button>
+        </div>
       </div>
 
       {/* Summary Cards */}
@@ -215,6 +279,57 @@ export const ComplaintsPage: React.FC = () => {
                   onClick={() => setResolveModal(null)}
                   style={{ backgroundColor: 'transparent', border: '1px solid var(--border)', color: 'var(--text-muted)' }}
                 >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Register Complaint Modal */}
+      {showRegisterModal && (
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+          <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '16px', minWidth: '480px', boxShadow: 'var(--shadow-lg)' }}>
+            <h3 style={{ margin: '0 0 1.5rem' }}>Register New Complaint</h3>
+            <form onSubmit={handleRegisterComplaint}>
+              <div className="form-group">
+                <label>Exam</label>
+                <select value={registerForm.examId} onChange={e => handleExamChange(e.target.value)} required>
+                  <option value="">Select an exam...</option>
+                  {exams.map(ex => <option key={ex._id} value={ex._id}>{ex.name}</option>)}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Session</label>
+                <select value={registerForm.sessionId} onChange={e => handleSessionChange(e.target.value)} required disabled={!registerForm.examId || isLoadingSessions}>
+                  <option value="">{isLoadingSessions ? 'Loading...' : 'Select a session...'}</option>
+                  {sessions.map(s => <option key={s._id} value={s._id}>{s.name || `Session ${s.sessionNumber}`}</option>)}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Candidate</label>
+                <select value={registerForm.candidateId} onChange={e => setRegisterForm(f => ({ ...f, candidateId: e.target.value }))} required disabled={!registerForm.sessionId || isLoadingCandidates}>
+                  <option value="">{isLoadingCandidates ? 'Loading...' : 'Select a candidate...'}</option>
+                  {candidates.map(c => <option key={c._id} value={c._id}>{c.registrationNumber} — {c.name}</option>)}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Complaint Description</label>
+                <textarea
+                  value={registerForm.description}
+                  onChange={e => setRegisterForm(f => ({ ...f, description: e.target.value }))}
+                  required
+                  placeholder="Describe the issue the candidate is facing..."
+                  style={{ width: '100%', minHeight: '90px' }}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+                <button type="submit" disabled={isRegistering}>
+                  {isRegistering ? 'Submitting...' : 'Submit Complaint'}
+                </button>
+                <button type="button" onClick={() => setShowRegisterModal(false)}
+                  style={{ backgroundColor: 'transparent', border: '1px solid var(--border)', color: 'var(--text-muted)' }}>
                   Cancel
                 </button>
               </div>
