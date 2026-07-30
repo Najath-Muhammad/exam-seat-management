@@ -1,7 +1,7 @@
 import React from 'react';
-import { SeatAssignment, AssignmentStatus } from '../../types/seatAssignment.types';
-import { Candidate } from '../../../candidates/types/candidate.types';
-import { Seat } from '../../../seats/types/seat.types';
+import { SeatAssignment, AssignmentStatus } from '../types/seatAssignment.types';
+import { Candidate } from '../../candidates/types/candidate.types';
+import { Seat } from '../../seats/types/seat.types';
 
 interface CandidateListItem {
   candidateId: string;

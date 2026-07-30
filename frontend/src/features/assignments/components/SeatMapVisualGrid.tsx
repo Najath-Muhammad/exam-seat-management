@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SeatMapItem } from '../../types/seatMap.types';
+import { SeatMapItem } from '../types/seatMap.types';
 
 interface Props {
   seats: SeatMapItem[];

@@ -1,6 +1,6 @@
 import React from 'react';
-import { SeatMapData } from '../../types/seatMap.types';
-import { InitialAllocationResult } from '../../types/seatAssignment.types';
+import { SeatMapData } from '../types/seatMap.types';
+import { InitialAllocationResult } from '../types/seatAssignment.types';
 
 interface Props {
   seatMap: SeatMapData;
