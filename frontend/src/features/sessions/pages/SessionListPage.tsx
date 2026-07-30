@@ -34,53 +34,64 @@ export const SessionListPage: React.FC = () => {
   if (!exam) return <div>Exam not found.</div>;
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Sessions for {exam.name}</h2>
+  return (
+    <div className="page-container">
+      <div className="page-header">
+        <h2 style={{ margin: 0 }}>Sessions for {exam.name}</h2>
         <Link 
           to={`/admin/exams/${exam._id}/sessions/create`}
-          style={{ padding: '0.5rem 1rem', backgroundColor: '#28a745', color: 'white', textDecoration: 'none', borderRadius: '4px' }}
+          className="btn-primary"
+          style={{ textDecoration: 'none', backgroundColor: '#059669' }}
         >
           + Create Session
         </Link>
       </div>
       
-      <div style={{ marginTop: '2rem' }}>
+      <div className="card">
         {sessions.length === 0 ? (
-          <p>No sessions created yet.</p>
+          <p className="text-muted">No sessions created yet.</p>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #ddd' }}>
-                <th style={{ padding: '0.5rem' }}>Session</th>
-                <th style={{ padding: '0.5rem' }}>Time</th>
-                <th style={{ padding: '0.5rem' }}>Status</th>
-                <th style={{ padding: '0.5rem' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sessions.map(s => (
-                <tr key={s._id} style={{ borderBottom: '1px solid #ddd' }}>
-                  <td style={{ padding: '0.5rem' }}>
-                    {s.name || `Session ${s.sessionNumber}`}
-                    <br />
-                    <small>#{s.sessionNumber}</small>
-                  </td>
-                  <td style={{ padding: '0.5rem' }}>
-                    {new Date(s.startAt).toLocaleString()} - <br/>{new Date(s.endAt).toLocaleString()}
-                  </td>
-                  <td style={{ padding: '0.5rem' }}>
-                    <span style={{ padding: '0.25rem 0.5rem', backgroundColor: '#e9ecef', borderRadius: '4px', fontSize: '0.85rem' }}>
-                      {s.status}
-                    </span>
-                  </td>
-                  <td style={{ padding: '0.5rem' }}>
-                    <Link to={`/admin/sessions/${s._id}`} style={{ marginRight: '1rem', color: '#007bff' }}>Details</Link>
-                  </td>
+          <div style={{ overflowX: 'auto' }}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Session</th>
+                  <th>Time</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {sessions.map(s => (
+                  <tr key={s._id}>
+                    <td>
+                      <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{s.name || `Session ${s.sessionNumber}`}</div>
+                      <small className="text-muted">#{s.sessionNumber}</small>
+                    </td>
+                    <td>
+                      <div style={{ fontSize: '0.9rem' }}>{new Date(s.startAt).toLocaleString()}</div>
+                      <div className="text-muted" style={{ fontSize: '0.8rem' }}>{new Date(s.endAt).toLocaleString()}</div>
+                    </td>
+                    <td>
+                      <span style={{ 
+                        padding: '4px 10px', 
+                        borderRadius: '9999px', 
+                        fontSize: '0.75rem', 
+                        fontWeight: 600,
+                        backgroundColor: '#f1f5f9',
+                        color: 'var(--text-main)'
+                      }}>
+                        {s.status}
+                      </span>
+                    </td>
+                    <td>
+                      <Link to={`/admin/sessions/${s._id}`} style={{ fontWeight: 500 }}>Manage</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

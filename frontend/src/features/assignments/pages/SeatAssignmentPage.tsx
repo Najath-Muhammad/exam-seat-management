@@ -144,17 +144,18 @@ export const SeatAssignmentPage: React.FC = () => {
   const availableSeats = seatMap.seats.filter(s => s.mapStatus === 'VACANT');
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <Link to={`/admin/exams/${examId}/sessions/${sessionId}`} style={{ color: '#6c757d', textDecoration: 'none' }}>
-          &larr; Back to Session Details
-        </Link>
-        <button onClick={fetchData} style={{ padding: '0.5rem 1rem', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-          ↻ Refresh State
-        </button>
+    <div className="page-container">
+      <div className="page-header" style={{ marginBottom: '1rem' }}>
+        <h2 style={{ margin: 0 }}>Session Seat Map & Allocation</h2>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <Link to={`/admin/exams/${examId}/sessions/${sessionId}`} className="btn-secondary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', padding: '0.6rem 1.2rem', borderRadius: '8px', border: '1px solid var(--border)', color: 'var(--text-muted)' }}>
+            &larr; Back to Session Details
+          </Link>
+          <button onClick={fetchData} className="btn-primary" style={{ backgroundColor: 'var(--text-muted)' }}>
+            ↻ Refresh State
+          </button>
+        </div>
       </div>
-
-      <h2>Session Seat Map & Allocation</h2>
 
       {recoveryStatus && !recoveryStatus.isConsistent && (
         <div style={{ padding: '1rem', backgroundColor: '#f8d7da', border: '1px solid #f5c6cb', color: '#721c24', borderRadius: '4px', marginBottom: '1.5rem' }}>
@@ -168,10 +169,10 @@ export const SeatAssignmentPage: React.FC = () => {
         </div>
       )}
       
-      <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid #ddd', paddingBottom: '0.5rem', marginBottom: '1.5rem', marginTop: '1.5rem' }}>
-        <button onClick={() => setActiveTab('dashboard')} style={{ fontWeight: activeTab === 'dashboard' ? 'bold' : 'normal', border: 'none', background: 'none', cursor: 'pointer', fontSize: '1rem' }}>Dashboard</button>
-        <button onClick={() => setActiveTab('map')} style={{ fontWeight: activeTab === 'map' ? 'bold' : 'normal', border: 'none', background: 'none', cursor: 'pointer', fontSize: '1rem' }}>Visual Seat Map</button>
-        <button onClick={() => setActiveTab('candidates')} style={{ fontWeight: activeTab === 'candidates' ? 'bold' : 'normal', border: 'none', background: 'none', cursor: 'pointer', fontSize: '1rem' }}>Candidates & List</button>
+      <div style={{ display: 'flex', gap: '1.5rem', borderBottom: '2px solid var(--border)', paddingBottom: '0', marginBottom: '2rem', marginTop: '1.5rem' }}>
+        <button onClick={() => setActiveTab('dashboard')} style={{ fontWeight: activeTab === 'dashboard' ? 600 : 500, color: activeTab === 'dashboard' ? 'var(--primary)' : 'var(--text-muted)', borderBottom: activeTab === 'dashboard' ? '2px solid var(--primary)' : '2px solid transparent', padding: '0.75rem 0', borderRadius: 0, boxShadow: 'none' }} className="btn-tab">Dashboard</button>
+        <button onClick={() => setActiveTab('map')} style={{ fontWeight: activeTab === 'map' ? 600 : 500, color: activeTab === 'map' ? 'var(--primary)' : 'var(--text-muted)', borderBottom: activeTab === 'map' ? '2px solid var(--primary)' : '2px solid transparent', padding: '0.75rem 0', borderRadius: 0, boxShadow: 'none' }} className="btn-tab">Visual Seat Map</button>
+        <button onClick={() => setActiveTab('candidates')} style={{ fontWeight: activeTab === 'candidates' ? 600 : 500, color: activeTab === 'candidates' ? 'var(--primary)' : 'var(--text-muted)', borderBottom: activeTab === 'candidates' ? '2px solid var(--primary)' : '2px solid transparent', padding: '0.75rem 0', borderRadius: 0, boxShadow: 'none' }} className="btn-tab">Candidates & List</button>
       </div>
 
       {activeTab === 'dashboard' && (

@@ -60,76 +60,82 @@ export const AdminDashboardPage: React.FC = () => {
   if (!data) return <div>No data available</div>;
 
   return (
-    <div style={{ padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+  return (
+    <div className="page-container">
+      <div className="page-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <h2 style={{ margin: 0 }}>Admin Dashboard</h2>
           <span style={{ 
             fontSize: '0.8rem', 
-            padding: '4px 8px', 
-            borderRadius: '4px', 
-            backgroundColor: isConnected ? '#d4edda' : '#f8d7da',
-            color: isConnected ? '#155724' : '#721c24' 
+            padding: '4px 12px', 
+            borderRadius: '9999px', 
+            backgroundColor: isConnected ? '#d1fae5' : '#fee2e2',
+            color: isConnected ? '#059669' : '#dc2626',
+            fontWeight: 500
           }}>
             {isConnected ? '● Live' : '○ Offline'}
           </span>
         </div>
         <div>
-          <button onClick={fetchData} style={{ padding: '8px 16px', cursor: 'pointer' }}>
+          <button onClick={fetchData} className="btn-primary">
             Refresh Data
           </button>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '40px' }}>
-        <div style={{ padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px', border: '1px solid #dee2e6' }}>
+      <div className="grid-cards">
+        <div className="dashboard-card">
           <h4>Total Exams</h4>
-          <h2 style={{ margin: 0, color: '#007bff' }}>{data.overview.totalExams}</h2>
+          <h2 style={{ color: 'var(--primary)' }}>{data.overview.totalExams}</h2>
         </div>
-        <div style={{ padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px', border: '1px solid #dee2e6' }}>
+        <div className="dashboard-card">
           <h4>Total Sessions</h4>
-          <h2 style={{ margin: 0, color: '#007bff' }}>{data.overview.totalSessions}</h2>
+          <h2 style={{ color: 'var(--primary)' }}>{data.overview.totalSessions}</h2>
         </div>
-        <div style={{ padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px', border: '1px solid #dee2e6' }}>
+        <div className="dashboard-card">
           <h4>Assigned Candidates</h4>
-          <h2 style={{ margin: 0, color: '#28a745' }}>{data.candidates.assigned}</h2>
-          <small>{data.candidates.unassigned} Unassigned</small>
+          <h2 style={{ color: '#059669' }}>{data.candidates.assigned}</h2>
+          <small className="text-muted">{data.candidates.unassigned} Unassigned</small>
         </div>
-        <div style={{ padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px', border: '1px solid #dee2e6' }}>
+        <div className="dashboard-card">
           <h4>Occupied Seats</h4>
-          <h2 style={{ margin: 0, color: '#17a2b8' }}>{data.seats.occupied}</h2>
-          <small>{data.seats.vacant} Vacant</small>
+          <h2 style={{ color: 'var(--secondary)' }}>{data.seats.occupied}</h2>
+          <small className="text-muted">{data.seats.vacant} Vacant</small>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-        <div>
-          <h3>Recent Movements & Activity</h3>
+      <div className="dashboard-grid">
+        <div className="card" style={{ padding: '2rem' }}>
+          <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-main)' }}>Recent Movements & Activity</h3>
           {data.activity.length === 0 ? (
-            <p>No recent activity</p>
+            <p className="text-muted">No recent activity</p>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {data.activity.map((act, idx) => (
-                <div key={idx} style={{ padding: '15px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '4px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <strong>{act.candidateName} ({act.registrationNumber})</strong>
-                    <span style={{ fontSize: '0.85rem', color: '#666' }}>{new Date(act.timestamp).toLocaleString()}</span>
+                <div key={idx} style={{ padding: '1.25rem', backgroundColor: '#f8fafc', border: '1px solid var(--border)', borderRadius: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <strong>{act.candidateName} <span className="text-muted">({act.registrationNumber})</span></strong>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{new Date(act.timestamp).toLocaleString()}</span>
                   </div>
-                  <div style={{ marginBottom: '5px' }}>
+                  <div style={{ marginBottom: '8px' }}>
                     <span style={{ 
-                      padding: '2px 8px', 
-                      borderRadius: '12px', 
-                      fontSize: '0.8rem', 
+                      padding: '4px 10px', 
+                      borderRadius: '9999px', 
+                      fontSize: '0.75rem', 
+                      fontWeight: 600,
                       backgroundColor: 
-                        act.action === HistoryAction.SESSION_MOVED ? '#ffc107' :
-                        act.action === HistoryAction.SEAT_REASSIGNED ? '#17a2b8' :
-                        act.action === HistoryAction.INITIAL_ASSIGNMENT ? '#28a745' : '#dc3545',
-                      color: act.action === HistoryAction.SESSION_MOVED ? '#000' : '#fff'
+                        act.action === HistoryAction.SESSION_MOVED ? '#fef3c7' :
+                        act.action === HistoryAction.SEAT_REASSIGNED ? '#e0f2fe' :
+                        act.action === HistoryAction.INITIAL_ASSIGNMENT ? '#d1fae5' : '#fee2e2',
+                      color: 
+                        act.action === HistoryAction.SESSION_MOVED ? '#d97706' :
+                        act.action === HistoryAction.SEAT_REASSIGNED ? '#0284c7' :
+                        act.action === HistoryAction.INITIAL_ASSIGNMENT ? '#059669' : '#dc2626'
                     }}>
                       {act.action.replace('_', ' ')}
                     </span>
                   </div>
-                  <div style={{ fontSize: '0.9rem' }}>
+                  <div style={{ fontSize: '0.9rem', color: 'var(--text-main)', marginTop: '8px' }}>
                     {act.oldSessionName && act.newSessionName && act.oldSessionName !== act.newSessionName && (
                       <div>Session: {act.oldSessionName} &rarr; {act.newSessionName}</div>
                     )}
@@ -140,45 +146,59 @@ export const AdminDashboardPage: React.FC = () => {
                       <div>Seat: {act.newSeatNumber}</div>
                     )}
                   </div>
-                  {act.reason && <div style={{ fontSize: '0.85rem', fontStyle: 'italic', marginTop: '5px', color: '#555' }}>Reason: {act.reason}</div>}
-                  <div style={{ fontSize: '0.8rem', marginTop: '5px', color: '#888' }}>By: {act.performedBy}</div>
+                  {act.reason && <div style={{ fontSize: '0.85rem', fontStyle: 'italic', marginTop: '8px', color: 'var(--text-muted)' }}>Reason: {act.reason}</div>}
+                  <div style={{ fontSize: '0.8rem', marginTop: '8px', color: 'var(--text-muted)' }}>By: {act.performedBy}</div>
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        <div>
-          <div style={{ marginBottom: '20px' }}>
-            <h3>System Status</h3>
-            <div style={{ padding: '20px', backgroundColor: data.system.issueCount === 0 ? '#d4edda' : '#f8d7da', borderRadius: '8px' }}>
-              <p><strong>Database:</strong> {data.system.database}</p>
-              <p><strong>Consistency:</strong> {data.system.consistencyStatus}</p>
-              <p><strong>Issues Detected:</strong> {data.system.issueCount}</p>
+        <div className="card" style={{ padding: '2rem' }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <h3 style={{ marginBottom: '1rem', color: 'var(--text-main)' }}>System Status</h3>
+            <div style={{ padding: '1.5rem', backgroundColor: data.system.issueCount === 0 ? '#d1fae5' : '#fee2e2', borderRadius: '12px', border: '1px solid', borderColor: data.system.issueCount === 0 ? '#34d399' : '#f87171' }}>
+              <p style={{ margin: '0 0 0.5rem 0' }}><strong>Database:</strong> {data.system.database}</p>
+              <p style={{ margin: '0 0 0.5rem 0' }}><strong>Consistency:</strong> {data.system.consistencyStatus}</p>
+              <p style={{ margin: 0 }}><strong>Issues Detected:</strong> <span style={{ color: data.system.issueCount === 0 ? '#059669' : '#dc2626', fontWeight: 600 }}>{data.system.issueCount}</span></p>
             </div>
           </div>
           
-          <h3>Complete Assignment History</h3>
-          <div style={{ overflowX: 'auto', border: '1px solid #ddd', borderRadius: '4px' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-              <thead style={{ backgroundColor: '#f8f9fa' }}>
+          <h3 style={{ marginBottom: '1rem', color: 'var(--text-main)' }}>Complete Assignment History</h3>
+          <div style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid var(--border)' }}>
+            <table>
+              <thead>
                 <tr>
-                  <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Date</th>
-                  <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Candidate</th>
-                  <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Action</th>
-                  <th style={{ padding: '10px', borderBottom: '2px solid #ddd' }}>Details</th>
+                  <th>Date</th>
+                  <th>Candidate</th>
+                  <th>Action</th>
+                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
                 {history?.data.map((h: IAssignmentHistory) => (
-                  <tr key={h._id} style={{ borderBottom: '1px solid #ddd' }}>
-                    <td style={{ padding: '10px' }}>{new Date(h.createdAt).toLocaleString()}</td>
-                    <td style={{ padding: '10px' }}>
-                      {h.candidateId.name}<br/>
-                      <small>{h.candidateId.registrationNumber}</small>
+                  <tr key={h._id}>
+                    <td>
+                      <div style={{ fontWeight: 500 }}>{new Date(h.createdAt).toLocaleDateString()}</div>
+                      <div className="text-muted" style={{ fontSize: '0.8rem' }}>{new Date(h.createdAt).toLocaleTimeString()}</div>
                     </td>
-                    <td style={{ padding: '10px' }}>{h.action.replace('_', ' ')}</td>
-                    <td style={{ padding: '10px', fontSize: '0.9rem' }}>
+                    <td>
+                      <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{h.candidateId.name}</div>
+                      <small className="text-muted">{h.candidateId.registrationNumber}</small>
+                    </td>
+                    <td>
+                      <span style={{ 
+                        padding: '4px 10px', 
+                        borderRadius: '9999px', 
+                        fontSize: '0.75rem', 
+                        fontWeight: 600,
+                        backgroundColor: '#f1f5f9',
+                        color: 'var(--text-main)'
+                      }}>
+                        {h.action.replace('_', ' ')}
+                      </span>
+                    </td>
+                    <td style={{ fontSize: '0.9rem' }}>
                       {h.oldSessionId && h.newSessionId && h.oldSessionId._id !== h.newSessionId._id && (
                         <div>Session: {h.oldSessionId.name} &rarr; {h.newSessionId.name}</div>
                       )}
@@ -188,7 +208,7 @@ export const AdminDashboardPage: React.FC = () => {
                       {!h.oldSeatId && h.newSeatId && (
                         <div>Seat: {h.newSeatId.seatNumber}</div>
                       )}
-                      {h.reason && <div style={{ color: '#666', fontStyle: 'italic' }}>"{h.reason}"</div>}
+                      {h.reason && <div className="text-muted" style={{ fontStyle: 'italic', marginTop: '4px' }}>"{h.reason}"</div>}
                     </td>
                   </tr>
                 ))}

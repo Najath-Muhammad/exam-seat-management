@@ -26,20 +26,26 @@ export const ExamListPage: React.FC = () => {
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
   return (
-    <div>
-      <h2>Exams</h2>
+  return (
+    <div className="page-container">
+      <div className="page-header">
+        <h2 style={{ margin: 0 }}>Exams</h2>
+      </div>
+      
       {exams.length === 0 ? (
-        <p>No exams found.</p>
+        <p className="text-muted">No exams found.</p>
       ) : (
-        <ul style={{ listStyle: 'none', padding: 0 }}>
+        <div className="grid-cards">
           {exams.map(exam => (
-            <li key={exam._id} style={{ marginBottom: '1rem', padding: '1rem', border: '1px solid #ccc', borderRadius: '4px' }}>
-              <h3>{exam.name}</h3>
-              <p>{exam.description}</p>
-              <Link to={`/admin/exams/${exam._id}/sessions`} style={{ color: '#007bff' }}>View Sessions</Link>
-            </li>
+            <div key={exam._id} className="card dashboard-card">
+              <h3 style={{ color: 'var(--primary)', marginBottom: '0.5rem' }}>{exam.name}</h3>
+              <p className="text-muted" style={{ marginBottom: '1.5rem' }}>{exam.description}</p>
+              <Link to={`/admin/exams/${exam._id}/sessions`} className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }}>
+                View Sessions
+              </Link>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

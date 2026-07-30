@@ -111,14 +111,16 @@ export const SeatManagementPage: React.FC = () => {
   );
 
   return (
-    <div>
-      <h2>Physical Seat Management</h2>
-      <p>Total Configured Seats: {data.total}</p>
+    <div className="page-container">
+      <div className="page-header">
+        <h2 style={{ margin: 0 }}>Physical Seat Management</h2>
+        <div className="text-muted">Total Configured Seats: {data.total}</div>
+      </div>
 
-      <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid #ddd', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>
-        <button onClick={() => setActiveTab('list')} style={{ fontWeight: activeTab === 'list' ? 'bold' : 'normal', border: 'none', background: 'none', cursor: 'pointer', fontSize: '1rem' }}>Seat List</button>
-        <button onClick={() => setActiveTab('map')} style={{ fontWeight: activeTab === 'map' ? 'bold' : 'normal', border: 'none', background: 'none', cursor: 'pointer', fontSize: '1rem' }}>Visual Map</button>
-        <button onClick={() => setActiveTab('generate')} style={{ fontWeight: activeTab === 'generate' ? 'bold' : 'normal', border: 'none', background: 'none', cursor: 'pointer', fontSize: '1rem', color: '#007bff' }}>Bulk Generate</button>
+      <div style={{ display: 'flex', gap: '1.5rem', borderBottom: '2px solid var(--border)', paddingBottom: '0', marginBottom: '2rem' }}>
+        <button onClick={() => setActiveTab('list')} style={{ fontWeight: activeTab === 'list' ? 600 : 500, color: activeTab === 'list' ? 'var(--primary)' : 'var(--text-muted)', borderBottom: activeTab === 'list' ? '2px solid var(--primary)' : '2px solid transparent', padding: '0.75rem 0', borderRadius: 0, boxShadow: 'none' }} className="btn-tab">Seat List</button>
+        <button onClick={() => setActiveTab('map')} style={{ fontWeight: activeTab === 'map' ? 600 : 500, color: activeTab === 'map' ? 'var(--primary)' : 'var(--text-muted)', borderBottom: activeTab === 'map' ? '2px solid var(--primary)' : '2px solid transparent', padding: '0.75rem 0', borderRadius: 0, boxShadow: 'none' }} className="btn-tab">Visual Map</button>
+        <button onClick={() => setActiveTab('generate')} style={{ fontWeight: activeTab === 'generate' ? 600 : 500, color: activeTab === 'generate' ? 'var(--primary)' : 'var(--text-muted)', borderBottom: activeTab === 'generate' ? '2px solid var(--primary)' : '2px solid transparent', padding: '0.75rem 0', borderRadius: 0, boxShadow: 'none' }} className="btn-tab">Bulk Generate</button>
       </div>
 
       {activeTab === 'generate' && (

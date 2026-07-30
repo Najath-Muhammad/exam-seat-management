@@ -36,40 +36,43 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f5f5f5' }}>
-      <form onSubmit={handleSubmit} style={{ background: 'white', padding: '2rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', width: '300px' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Admin Login</h2>
+    <div className="login-container">
+      <form onSubmit={handleSubmit} className="login-form card">
+        <div className="login-header">
+           <h2>Admin Portal</h2>
+           <p className="text-muted">Sign in to manage exam seating</p>
+        </div>
         
-        {error && <div style={{ color: 'red', marginBottom: '1rem', fontSize: '0.9rem', textAlign: 'center' }}>{error}</div>}
+        {error && <div className="alert-error">{error}</div>}
         
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.5rem' }}>Email</label>
+        <div className="form-group">
+          <label>Email Address</label>
           <input 
             type="email" 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ width: '100%', padding: '0.5rem', boxSizing: 'border-box' }}
+            placeholder="admin@example.com"
           />
         </div>
         
-        <div style={{ marginBottom: '1.5rem' }}>
-          <label style={{ display: 'block', marginBottom: '0.5rem' }}>Password</label>
+        <div className="form-group">
+          <label>Password</label>
           <input 
             type="password" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ width: '100%', padding: '0.5rem', boxSizing: 'border-box' }}
+            placeholder="••••••••"
           />
         </div>
         
         <button 
           type="submit" 
           disabled={isLoading}
-          style={{ width: '100%', padding: '0.75rem', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: isLoading ? 'not-allowed' : 'pointer' }}
+          className="btn-primary full-width mt-4"
         >
-          {isLoading ? 'Logging in...' : 'Login'}
+          {isLoading ? 'Authenticating...' : 'Sign In'}
         </button>
       </form>
     </div>
