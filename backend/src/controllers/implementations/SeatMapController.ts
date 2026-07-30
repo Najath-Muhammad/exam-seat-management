@@ -1,3 +1,4 @@
+import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { ISeatMapController } from '../interfaces/ISeatMapController';
 import { ISeatMapService } from '../../services/interfaces/ISeatMapService';

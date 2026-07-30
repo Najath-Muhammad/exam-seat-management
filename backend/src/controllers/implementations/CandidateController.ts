@@ -1,3 +1,4 @@
+import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { ICandidateController } from '../interfaces/ICandidateController';
 import { ICandidateService } from '../../services/interfaces/ICandidateService';

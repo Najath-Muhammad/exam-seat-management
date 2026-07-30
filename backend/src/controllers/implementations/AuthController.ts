@@ -1,3 +1,4 @@
+import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { IAuthController } from '../interfaces/IAuthController';
 import { IAuthService } from '../../services/interfaces/IAuthService';

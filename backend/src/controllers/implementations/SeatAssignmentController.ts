@@ -1,3 +1,4 @@
+import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { ISeatAssignmentController } from '../interfaces/ISeatAssignmentController';
 import { ISeatAssignmentService } from '../../services/interfaces/ISeatAssignmentService';
