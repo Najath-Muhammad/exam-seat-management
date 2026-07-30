@@ -1,114 +1,51 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { CandidateListResponse, BulkImportResult } from '../types/candidate.types';
-import { candidateApi } from '../services/candidateApi';
-import { sessionApi } from '../../sessions/services/sessionApi';
-import { Session } from '../../sessions/types/session.types';
+import { useCandidates } from '../hooks/useCandidates';
+import { CandidateTable } from '../components/CandidateTable';
+import { AddCandidateForm } from '../components/AddCandidateForm';
 
 export const CandidateListPage: React.FC = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
-  const [session, setSession] = useState<Session | null>(null);
-  
-  const [data, setData] = useState<CandidateListResponse | null>(null);
-  const [page, setPage] = useState(1);
-  const [limit] = useState(50);
+  const {
+    session, data, page, setPage, isLoading, error,
+    isFinalizing, finalizeList, isImporting, importResult, setImportResult,
+    importCSV, addCandidate, deleteCandidate
+  } = useCandidates(sessionId);
+
   const [search, setSearch] = useState('');
-  
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  const [isFinalizing, setIsFinalizing] = useState(false);
-  
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isImporting, setIsImporting] = useState(false);
-  const [importResult, setImportResult] = useState<BulkImportResult | null>(null);
-  
-  // Add Candidate Form State
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newCandidate, setNewCandidate] = useState({ registrationNumber: '', name: '', email: '', phone: '' });
-  const [isAdding, setIsAdding] = useState(false);
-  const [addError, setAddError] = useState<string | null>(null);
-
-  const fetchData = async () => {
-    if (!sessionId) return;
-    setIsLoading(true);
-    try {
-      const [sessionData, candidatesData] = await Promise.all([
-        sessionApi.getSession(sessionId),
-        candidateApi.getCandidatesBySession(sessionId, page, limit)
-      ]);
-      setSession(sessionData);
-      setData(candidatesData);
-      setError(null);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to load candidates');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionId, page]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFinalize = async () => {
-    if (!sessionId) return;
     if (!window.confirm('Once finalized, candidates cannot normally be added or removed from this session.\n\nAre you sure?')) return;
-    
-    setIsFinalizing(true);
     try {
-      await candidateApi.finalizeCandidates(sessionId);
-      await fetchData(); // Refresh session to get updated isCandidatesFinalized
+      await finalizeList();
     } catch (err: any) {
       alert(err.response?.data?.message || 'Failed to finalize candidate list');
-    } finally {
-      setIsFinalizing(false);
     }
   };
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!sessionId) return;
     const file = e.target.files?.[0];
     if (!file) return;
-
-    setImportResult(null);
-    setIsImporting(true);
     try {
-      const result = await candidateApi.bulkImport(sessionId, file);
-      setImportResult(result);
-      await fetchData();
+      await importCSV(file);
     } catch (err: any) {
       alert(err.response?.data?.message || 'Import failed');
     } finally {
-      setIsImporting(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
-  const handleAddCandidate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!sessionId) return;
-    
-    setAddError(null);
-    setIsAdding(true);
-    try {
-      await candidateApi.createCandidate(sessionId, newCandidate);
-      setShowAddForm(false);
-      setNewCandidate({ registrationNumber: '', name: '', email: '', phone: '' });
-      await fetchData();
-    } catch (err: any) {
-      setAddError(err.response?.data?.message || 'Failed to add candidate');
-    } finally {
-      setIsAdding(false);
-    }
+  const handleAddSubmit = async (newCandidate: any) => {
+    await addCandidate(newCandidate);
+    setShowAddForm(false);
   };
 
   const handleDelete = async (candidateId: string) => {
     if (!window.confirm('Are you sure you want to delete this candidate?')) return;
     try {
-      await candidateApi.deleteCandidate(candidateId);
-      await fetchData();
+      await deleteCandidate(candidateId);
     } catch (err: any) {
       alert(err.response?.data?.message || 'Failed to delete candidate');
     }
@@ -137,11 +74,7 @@ export const CandidateListPage: React.FC = () => {
             Candidate List Finalized
           </span>
         ) : (
-          <button 
-            onClick={handleFinalize} 
-            disabled={isFinalizing}
-            style={{ padding: '0.5rem 1rem', backgroundColor: '#ffc107', color: 'black', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-          >
+          <button onClick={handleFinalize} disabled={isFinalizing} style={{ padding: '0.5rem 1rem', backgroundColor: '#ffc107', color: 'black', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
             {isFinalizing ? 'Finalizing...' : 'Finalize Candidate List'}
           </button>
         )}
@@ -155,18 +88,8 @@ export const CandidateListPage: React.FC = () => {
             + Add Candidate
           </button>
           
-          <input 
-            type="file" 
-            accept=".csv" 
-            style={{ display: 'none' }} 
-            ref={fileInputRef} 
-            onChange={handleImport}
-          />
-          <button 
-            onClick={() => fileInputRef.current?.click()} 
-            disabled={isImporting}
-            style={{ padding: '0.5rem 1rem', backgroundColor: '#17a2b8', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-          >
+          <input type="file" accept=".csv" style={{ display: 'none' }} ref={fileInputRef} onChange={handleImport} />
+          <button onClick={() => fileInputRef.current?.click()} disabled={isImporting} style={{ padding: '0.5rem 1rem', backgroundColor: '#17a2b8', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
             {isImporting ? 'Importing...' : 'Import CSV'}
           </button>
         </div>
@@ -191,71 +114,15 @@ export const CandidateListPage: React.FC = () => {
       )}
 
       {showAddForm && !isFinalized && (
-        <form onSubmit={handleAddCandidate} style={{ padding: '1rem', border: '1px solid #ddd', borderRadius: '4px', marginBottom: '1.5rem', backgroundColor: '#f8f9fa' }}>
-          <h4>Add New Candidate</h4>
-          {addError && <p style={{ color: 'red', fontSize: '0.9rem' }}>{addError}</p>}
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <input type="text" placeholder="Registration Number" required value={newCandidate.registrationNumber} onChange={e => setNewCandidate({...newCandidate, registrationNumber: e.target.value})} style={{ padding: '0.5rem' }} />
-            <input type="text" placeholder="Name" required value={newCandidate.name} onChange={e => setNewCandidate({...newCandidate, name: e.target.value})} style={{ padding: '0.5rem' }} />
-            <input type="email" placeholder="Email" value={newCandidate.email} onChange={e => setNewCandidate({...newCandidate, email: e.target.value})} style={{ padding: '0.5rem' }} />
-            <input type="text" placeholder="Phone" value={newCandidate.phone} onChange={e => setNewCandidate({...newCandidate, phone: e.target.value})} style={{ padding: '0.5rem' }} />
-          </div>
-          <div style={{ marginTop: '1rem' }}>
-            <button type="submit" disabled={isAdding} style={{ padding: '0.5rem 1rem', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-              {isAdding ? 'Adding...' : 'Save Candidate'}
-            </button>
-            <button type="button" onClick={() => setShowAddForm(false)} style={{ marginLeft: '1rem', padding: '0.5rem 1rem', backgroundColor: 'transparent', border: '1px solid #6c757d', borderRadius: '4px', cursor: 'pointer' }}>Cancel</button>
-          </div>
-        </form>
+        <AddCandidateForm onSubmit={handleAddSubmit} onCancel={() => setShowAddForm(false)} />
       )}
 
       <div style={{ marginBottom: '1rem' }}>
-        <input 
-          type="text" 
-          placeholder="Search by name, reg num, email..." 
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{ padding: '0.5rem', width: '300px' }}
-        />
+        <input type="text" placeholder="Search by name, reg num, email..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ padding: '0.5rem', width: '300px' }} />
       </div>
 
-      {filteredCandidates.length === 0 ? (
-        <p>No candidates found.</p>
-      ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-          <thead>
-            <tr style={{ borderBottom: '2px solid #ddd' }}>
-              <th style={{ padding: '0.5rem' }}>Reg No</th>
-              <th style={{ padding: '0.5rem' }}>Name</th>
-              <th style={{ padding: '0.5rem' }}>Email</th>
-              <th style={{ padding: '0.5rem' }}>Status</th>
-              <th style={{ padding: '0.5rem' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCandidates.map(c => (
-              <tr key={c._id} style={{ borderBottom: '1px solid #ddd' }}>
-                <td style={{ padding: '0.5rem', fontWeight: 'bold' }}>{c.registrationNumber}</td>
-                <td style={{ padding: '0.5rem' }}>{c.name}</td>
-                <td style={{ padding: '0.5rem' }}>{c.email || '-'}</td>
-                <td style={{ padding: '0.5rem' }}>
-                  <span style={{ padding: '0.25rem 0.5rem', backgroundColor: '#e9ecef', borderRadius: '4px', fontSize: '0.85rem' }}>
-                    {c.status}
-                  </span>
-                </td>
-                <td style={{ padding: '0.5rem' }}>
-                  <Link to={`/admin/candidates/${c._id}`} style={{ marginRight: '1rem', color: '#007bff' }}>View</Link>
-                  {!isFinalized && (
-                    <button onClick={() => handleDelete(c._id)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}>Delete</button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <CandidateTable candidates={filteredCandidates} isFinalized={isFinalized} onDelete={handleDelete} />
 
-      {/* Pagination Controls */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem' }}>
         <span>Showing {filteredCandidates.length} of {data.total} total candidates (Page {data.page} of {data.totalPages})</span>
         <div>
