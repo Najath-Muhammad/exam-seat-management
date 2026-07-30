@@ -41,7 +41,7 @@ export class SeatMapService implements ISeatMapService {
     const mapItems: ISeatMapItem[] = allSeats.map(seat => {
       const seatIdStr = seat._id.toString();
       const assignment = assignmentBySeatId.get(seatIdStr);
-      let mapStatus: ISeatMapItem['mapStatus'] = 'VACANT';
+      let mapStatus: ISeatMapItem['mapStatus'];
 
       if (seat.status === SeatStatus.INACTIVE) {
         mapStatus = 'INACTIVE';

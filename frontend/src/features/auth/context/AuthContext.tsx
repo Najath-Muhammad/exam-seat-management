@@ -65,21 +65,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return () => window.removeEventListener('auth:refresh-failed', handleRefreshFailed);
   }, [checkAuth]);
 
-  const login = async (credentials: any) => {
-    try {
-      const response = await authApi.login(credentials);
-      const { accessToken, user } = response.data;
-      
-      setToken(accessToken);
-      setAuthState({
-        accessToken,
-        user,
-        isAuthenticated: true,
-        isLoading: false,
-      });
-    } catch (error) {
-      throw error;
-    }
+  const login = async (credentials: { email: string; password: string }) => {
+    const response = await authApi.login(credentials);
+    const { accessToken, user } = response.data;
+    setToken(accessToken);
+    setAuthState({
+      accessToken,
+      user,
+      isAuthenticated: true,
+      isLoading: false,
+    });
   };
 
   const logout = async () => {

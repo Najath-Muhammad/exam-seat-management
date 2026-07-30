@@ -52,7 +52,7 @@ export const ComplaintsPage: React.FC = () => {
     try {
       const data = await sessionApi.getExams();
       setExams(data);
-    } catch {  }
+    } catch (_e) { void _e; }
     setRegisterForm({ examId: '', sessionId: '', candidateId: '', description: '' });
     setSessions([]);
     setCandidates([]);
@@ -67,7 +67,7 @@ export const ComplaintsPage: React.FC = () => {
     try {
       const data = await sessionApi.getSessions(examId);
       setSessions(data);
-    } catch {  } finally { setIsLoadingSessions(false); }
+    } catch (_e) { void _e; } finally { setIsLoadingSessions(false); }
   };
 
   const handleSessionChange = async (sessionId: string) => {
@@ -78,7 +78,7 @@ export const ComplaintsPage: React.FC = () => {
     try {
       const result = await candidateApi.getCandidatesBySession(sessionId, 1, 200);
       setCandidates(result.candidates);
-    } catch {  } finally { setIsLoadingCandidates(false); }
+    } catch (_e) { void _e; } finally { setIsLoadingCandidates(false); }
   };
 
   const handleRegisterComplaint = async (e: React.FormEvent) => {
