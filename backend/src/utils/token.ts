@@ -18,7 +18,7 @@ export const generateRefreshToken = (payload: IJwtPayload): string => {
 export const verifyAccessToken = (token: string): IJwtPayload => {
   try {
     return jwt.verify(token, env.JWT_ACCESS_SECRET) as IJwtPayload;
-  } catch (error) {
+  } catch (_error) {
     throw new UnauthorizedError('Invalid or expired access token');
   }
 };
@@ -26,7 +26,7 @@ export const verifyAccessToken = (token: string): IJwtPayload => {
 export const verifyRefreshToken = (token: string): IJwtPayload => {
   try {
     return jwt.verify(token, env.JWT_REFRESH_SECRET) as IJwtPayload;
-  } catch (error) {
+  } catch (_error) {
     throw new UnauthorizedError('Invalid or expired refresh token');
   }
 };

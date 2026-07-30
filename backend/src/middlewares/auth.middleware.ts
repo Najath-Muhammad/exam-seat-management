@@ -15,7 +15,7 @@ export const authMiddleware = (req: Request, _res: Response, next: NextFunction)
 
     (req as IAuthenticatedRequest).user = decoded;
     next();
-  } catch (error) {
+  } catch (_error) {
     next(new UnauthorizedError('Invalid or expired token'));
   }
 };

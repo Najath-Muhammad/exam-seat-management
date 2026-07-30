@@ -36,7 +36,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isAuthenticated: true,
         isLoading: false,
       });
-    } catch (error) {
+    } catch (_error) {
       setToken(null);
       setAuthState({
         accessToken: null,
