@@ -43,6 +43,12 @@ export const AdminLayout: React.FC = () => {
           >
             Physical Seats
           </NavLink>
+          <NavLink 
+            to="/admin/complaints" 
+            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
+          >
+            🔔 Complaints
+          </NavLink>
         </nav>
 
         <div className="sidebar-footer">

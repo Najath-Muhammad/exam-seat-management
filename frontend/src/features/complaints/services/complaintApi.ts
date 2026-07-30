@@ -20,6 +20,11 @@ export const complaintApi = {
     return response.data.data;
   },
 
+  getAllComplaints: async (): Promise<Complaint[]> => {
+    const response = await apiClient.get<{ success: boolean; data: Complaint[] }>('/complaints');
+    return response.data.data;
+  },
+
   getSessionComplaints: async (sessionId: string): Promise<Complaint[]> => {
     const response = await apiClient.get<{ success: boolean; data: Complaint[] }>(`/complaints/session/${sessionId}`);
     return response.data.data;

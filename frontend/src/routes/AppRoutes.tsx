@@ -18,6 +18,7 @@ import { CandidateDetailsPage } from '../features/candidates/pages/CandidateDeta
 import { SeatManagementPage } from '../features/seats/pages/SeatManagementPage';
 import { SeatAssignmentPage } from '../features/assignments/pages/SeatAssignmentPage';
 import { AdminDashboardPage } from '../features/dashboard/pages/AdminDashboardPage';
+import { ComplaintsPage } from '../features/complaints/pages/ComplaintsPage';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -40,6 +41,7 @@ export const AppRoutes: React.FC = () => {
             <Route path="exams/:examId/sessions/:sessionId/assignments" element={<SeatAssignmentPage />} />
             <Route path="candidates/:candidateId" element={<CandidateDetailsPage />} />
             <Route path="seats" element={<SeatManagementPage />} />
+            <Route path="complaints" element={<ComplaintsPage />} />
           </Route>
         </Route>
       </Route>
