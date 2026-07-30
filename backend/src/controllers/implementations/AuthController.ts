@@ -1,3 +1,4 @@
+import { sendResponse } from '../../utils/response.util';
 import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { IAuthController } from '../interfaces/IAuthController';
@@ -35,14 +36,10 @@ export class AuthController implements IAuthController {
 
       this.setRefreshCookie(res, result.refreshToken);
 
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.LOGIN_SUCCESSFUL,
-        data: {
+      sendResponse(res, HttpStatus.OK, AppMessages.LOGIN_SUCCESSFUL, {
           accessToken: result.accessToken,
           user: result.user,
-        },
-      });
+        },);
     } catch (error) {
       next(error);
     }
@@ -52,10 +49,7 @@ export class AuthController implements IAuthController {
     try {
       const refreshToken = req.cookies?.refreshToken;
       if (!refreshToken) {
-        res.status(HttpStatus.UNAUTHORIZED).json({
-          success: false,
-          message: AppMessages.REFRESH_TOKEN_MISSING,
-        });
+        sendResponse(res, HttpStatus.UNAUTHORIZED, AppMessages.REFRESH_TOKEN_MISSING);
         return;
       }
 
@@ -63,14 +57,10 @@ export class AuthController implements IAuthController {
 
       this.setRefreshCookie(res, result.refreshToken);
 
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.TOKEN_REFRESHED,
-        data: {
+      sendResponse(res, HttpStatus.OK, AppMessages.TOKEN_REFRESHED, {
           accessToken: result.accessToken,
           user: result.user,
-        },
-      });
+        },);
     } catch (error) {
       // If refresh fails, clear the cookie
       this.clearRefreshCookie(res);
@@ -97,10 +87,7 @@ export class AuthController implements IAuthController {
 
       this.clearRefreshCookie(res);
 
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.LOGOUT_SUCCESSFUL,
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.LOGOUT_SUCCESSFUL);
     } catch (error) {
       next(error);
     }
@@ -112,11 +99,7 @@ export class AuthController implements IAuthController {
       const userId = authReq.user!.userId;
       const user = await this.authService.getUserById(userId);
 
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.USER_DETAILS_FETCHED,
-        data: { user },
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.USER_DETAILS_FETCHED, { user },);
     } catch (error) {
       next(error);
     }

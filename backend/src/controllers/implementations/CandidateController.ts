@@ -1,3 +1,4 @@
+import { sendResponse } from '../../utils/response.util';
 import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { ICandidateController } from '../interfaces/ICandidateController';
@@ -16,11 +17,7 @@ export class CandidateController implements ICandidateController {
         sessionId,
         ...req.body
       });
-      res.status(HttpStatus.CREATED).json({
-        success: true,
-        message: AppMessages.CANDIDATE_CREATED,
-        data: candidate
-      });
+      sendResponse(res, HttpStatus.CREATED, AppMessages.CANDIDATE_CREATED, candidate);
     } catch (error) {
       next(error);
     }
@@ -34,17 +31,13 @@ export class CandidateController implements ICandidateController {
       const skip = (page - 1) * limit;
 
       const result = await this.candidateService.getCandidatesBySession(sessionId, skip, limit);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.CANDIDATES_RETRIEVED,
-        data: {
+      sendResponse(res, HttpStatus.OK, AppMessages.CANDIDATES_RETRIEVED, {
           candidates: result.candidates,
           total: result.total,
           page,
           limit,
           totalPages: Math.ceil(result.total / limit)
-        }
-      });
+        });
     } catch (error) {
       next(error);
     }
@@ -54,11 +47,7 @@ export class CandidateController implements ICandidateController {
     try {
       const { candidateId } = req.params;
       const candidate = await this.candidateService.getCandidateById(candidateId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.CANDIDATE_RETRIEVED,
-        data: candidate
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.CANDIDATE_RETRIEVED, candidate);
     } catch (error) {
       next(error);
     }
@@ -68,11 +57,7 @@ export class CandidateController implements ICandidateController {
     try {
       const { candidateId } = req.params;
       const candidate = await this.candidateService.updateCandidate(candidateId, req.body);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.CANDIDATE_UPDATED,
-        data: candidate
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.CANDIDATE_UPDATED, candidate);
     } catch (error) {
       next(error);
     }
@@ -82,10 +67,7 @@ export class CandidateController implements ICandidateController {
     try {
       const { candidateId } = req.params;
       await this.candidateService.deleteCandidate(candidateId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.CANDIDATE_DELETED
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.CANDIDATE_DELETED);
     } catch (error) {
       next(error);
     }
@@ -95,7 +77,7 @@ export class CandidateController implements ICandidateController {
     try {
       const { sessionId } = req.params;
       if (!req.file) {
-        res.status(HttpStatus.BAD_REQUEST).json({ success: false, message: AppMessages.CSV_FILE_REQUIRED });
+        sendResponse(res, HttpStatus.BAD_REQUEST, AppMessages.CSV_FILE_REQUIRED);
         return;
       }
 
@@ -129,16 +111,12 @@ export class CandidateController implements ICandidateController {
 
           // Validate minimum fields
           if (mappedRecords.some(r => !r.registrationNumber || !r.name)) {
-            res.status(HttpStatus.BAD_REQUEST).json({ success: false, message: AppMessages.CSV_COLUMNS_REQUIRED });
+            sendResponse(res, HttpStatus.BAD_REQUEST, AppMessages.CSV_COLUMNS_REQUIRED);
             return;
           }
 
           const result = await this.candidateService.bulkImport(sessionId, mappedRecords);
-          res.status(HttpStatus.OK).json({
-            success: true,
-            message: AppMessages.BULK_IMPORT_PROCESSED,
-            data: result
-          });
+          sendResponse(res, HttpStatus.OK, AppMessages.BULK_IMPORT_PROCESSED, result);
         } catch (error) {
           next(error);
         }

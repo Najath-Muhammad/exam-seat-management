@@ -1,3 +1,4 @@
+import { sendResponse } from '../../utils/response.util';
 import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { IAssignmentHistoryController } from '../interfaces/IAssignmentHistoryController';
@@ -26,11 +27,7 @@ export class AssignmentHistoryController implements IAssignmentHistoryController
 
       const result = await this.historyService.getHistory(filter, page, limit);
 
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.ASSIGNMENT_HISTORY_RETRIEVED,
-        data: result
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.ASSIGNMENT_HISTORY_RETRIEVED, result);
     } catch (error) {
       next(error);
     }
@@ -41,11 +38,7 @@ export class AssignmentHistoryController implements IAssignmentHistoryController
       const { candidateId } = req.params;
       const history = await this.historyService.getCandidateHistory(candidateId);
 
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.CANDIDATE_ASSIGNMENT_HISTORY_RETRIEVED,
-        data: history
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.CANDIDATE_ASSIGNMENT_HISTORY_RETRIEVED, history);
     } catch (error) {
       next(error);
     }

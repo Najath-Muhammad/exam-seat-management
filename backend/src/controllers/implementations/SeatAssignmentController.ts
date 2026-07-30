@@ -1,3 +1,4 @@
+import { sendResponse } from '../../utils/response.util';
 import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { ISeatAssignmentController } from '../interfaces/ISeatAssignmentController';
@@ -15,11 +16,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const adminId = (req as IAuthenticatedRequest).user!.userId;
 
       const assignment = await this.assignmentService.assignSeat({ sessionId, candidateId, seatId, adminId });
-      res.status(HttpStatus.CREATED).json({
-        success: true,
-        message: AppMessages.SEAT_ASSIGNED,
-        data: assignment
-      });
+      sendResponse(res, HttpStatus.CREATED, AppMessages.SEAT_ASSIGNED, assignment);
     } catch (error) {
       next(error);
     }
@@ -29,11 +26,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
     try {
       const { sessionId } = req.params;
       const assignments = await this.assignmentService.getSessionAssignments(sessionId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.ASSIGNMENTS_RETRIEVED,
-        data: assignments
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.ASSIGNMENTS_RETRIEVED, assignments);
     } catch (error) {
       next(error);
     }
@@ -43,11 +36,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
     try {
       const { sessionId } = req.params;
       const seats = await this.assignmentService.getAvailableSeats(sessionId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.AVAILABLE_SEATS_RETRIEVED,
-        data: seats
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.AVAILABLE_SEATS_RETRIEVED, seats);
     } catch (error) {
       next(error);
     }
@@ -57,11 +46,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
     try {
       const { candidateId } = req.params;
       const assignments = await this.assignmentService.getCandidateAssignment(candidateId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.CANDIDATE_ASSIGNMENT_HISTORY_RETRIEVED,
-        data: assignments
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.CANDIDATE_ASSIGNMENT_HISTORY_RETRIEVED, assignments);
     } catch (error) {
       next(error);
     }
@@ -74,11 +59,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const adminId = (req as IAuthenticatedRequest).user!.userId;
 
       const assignment = await this.assignmentService.reassignSeat({ assignmentId, newSeatId, reason, adminId });
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.SEAT_REASSIGNED,
-        data: assignment
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.SEAT_REASSIGNED, assignment);
     } catch (error) {
       next(error);
     }
@@ -98,11 +79,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
         reason
       });
 
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.CANDIDATE_MOVED,
-        data
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.CANDIDATE_MOVED, data);
     } catch (error) {
       next(error);
     }
@@ -114,11 +91,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const adminId = (req as IAuthenticatedRequest).user!.userId;
 
       const assignment = await this.assignmentService.cancelAssignment({ assignmentId, adminId });
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.ASSIGNMENT_CANCELLED,
-        data: assignment
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.ASSIGNMENT_CANCELLED, assignment);
     } catch (error) {
       next(error);
     }
@@ -130,11 +103,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const adminId = (req as IAuthenticatedRequest).user!.userId;
 
       const result = await this.assignmentService.autoAssignSeats(sessionId, adminId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.AUTO_ASSIGNMENT_COMPLETED,
-        data: result
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.AUTO_ASSIGNMENT_COMPLETED, result);
     } catch (error) {
       next(error);
     }

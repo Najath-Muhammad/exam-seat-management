@@ -14,11 +14,7 @@ export class DashboardController implements IDashboardController {
 
       const data = await this.dashboardService.getDashboardData(examId, sessionId);
 
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.DASHBOARD_DATA_RETRIEVED,
-        data
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.DASHBOARD_DATA_RETRIEVED, data);
     } catch (error) {
       next(error);
     }

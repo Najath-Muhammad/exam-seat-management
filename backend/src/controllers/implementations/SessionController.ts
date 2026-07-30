@@ -1,3 +1,4 @@
+import { sendResponse } from '../../utils/response.util';
 import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { ISessionController } from '../interfaces/ISessionController';
@@ -14,11 +15,7 @@ export class SessionController implements ISessionController {
         examId,
         ...req.body
       });
-      res.status(HttpStatus.CREATED).json({
-        success: true,
-        message: AppMessages.SESSION_CREATED,
-        data: session
-      });
+      sendResponse(res, HttpStatus.CREATED, AppMessages.SESSION_CREATED, session);
     } catch (error) {
       next(error);
     }
@@ -28,11 +25,7 @@ export class SessionController implements ISessionController {
     try {
       const { examId } = req.params;
       const sessions = await this.sessionService.getSessionsByExamId(examId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.SESSIONS_RETRIEVED,
-        data: sessions
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.SESSIONS_RETRIEVED, sessions);
     } catch (error) {
       next(error);
     }
@@ -42,11 +35,7 @@ export class SessionController implements ISessionController {
     try {
       const { sessionId } = req.params;
       const session = await this.sessionService.getSessionById(sessionId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.SESSION_RETRIEVED,
-        data: session
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.SESSION_RETRIEVED, session);
     } catch (error) {
       next(error);
     }
@@ -56,11 +45,7 @@ export class SessionController implements ISessionController {
     try {
       const { sessionId } = req.params;
       const session = await this.sessionService.updateSession(sessionId, req.body);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.SESSION_UPDATED,
-        data: session
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.SESSION_UPDATED, session);
     } catch (error) {
       next(error);
     }
@@ -70,10 +55,7 @@ export class SessionController implements ISessionController {
     try {
       const { sessionId } = req.params;
       await this.sessionService.deleteSession(sessionId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.SESSION_DELETED
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.SESSION_DELETED);
     } catch (error) {
       next(error);
     }
@@ -83,11 +65,7 @@ export class SessionController implements ISessionController {
     try {
       const { sessionId } = req.params;
       const session = await this.sessionService.finalizeCandidates(sessionId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.CANDIDATE_LIST_FINALIZED,
-        data: session
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.CANDIDATE_LIST_FINALIZED, session);
     } catch (error) {
       next(error);
     }

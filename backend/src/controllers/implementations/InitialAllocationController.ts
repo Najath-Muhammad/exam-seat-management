@@ -1,3 +1,4 @@
+import { sendResponse } from '../../utils/response.util';
 import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { IInitialAllocationController } from '../interfaces/IInitialAllocationController';
@@ -14,11 +15,7 @@ export class InitialAllocationController implements IInitialAllocationController
       const adminId = (req as IAuthenticatedRequest).user!.userId;
 
       const result = await this.initialAllocationService.runInitialAllocation(sessionId, adminId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.INITIAL_ALLOCATION_COMPLETED,
-        data: result
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.INITIAL_ALLOCATION_COMPLETED, result);
     } catch (error) {
       next(error);
     }

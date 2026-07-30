@@ -1,3 +1,4 @@
+import { sendResponse } from '../../utils/response.util';
 import { AppMessages } from '../../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 import { ISeatController } from '../interfaces/ISeatController';
@@ -10,11 +11,7 @@ export class SeatController implements ISeatController {
   async createSeat(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const seat = await this.seatService.createSeat(req.body);
-      res.status(HttpStatus.CREATED).json({
-        success: true,
-        message: AppMessages.SEAT_CREATED,
-        data: seat
-      });
+      sendResponse(res, HttpStatus.CREATED, AppMessages.SEAT_CREATED, seat);
     } catch (error) {
       next(error);
     }
@@ -31,17 +28,13 @@ export class SeatController implements ISeatController {
       if (req.query.row) query.row = req.query.row;
 
       const result = await this.seatService.getSeats(skip, limit, query);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.SEATS_RETRIEVED,
-        data: {
+      sendResponse(res, HttpStatus.OK, AppMessages.SEATS_RETRIEVED, {
           seats: result.seats,
           total: result.total,
           page,
           limit,
           totalPages: Math.ceil(result.total / limit)
-        }
-      });
+        });
     } catch (error) {
       next(error);
     }
@@ -51,11 +44,7 @@ export class SeatController implements ISeatController {
     try {
       const { seatId } = req.params;
       const seat = await this.seatService.getSeatById(seatId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.SEAT_RETRIEVED,
-        data: seat
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.SEAT_RETRIEVED, seat);
     } catch (error) {
       next(error);
     }
@@ -65,11 +54,7 @@ export class SeatController implements ISeatController {
     try {
       const { seatId } = req.params;
       const seat = await this.seatService.updateSeat(seatId, req.body);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.SEAT_UPDATED,
-        data: seat
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.SEAT_UPDATED, seat);
     } catch (error) {
       next(error);
     }
@@ -79,10 +64,7 @@ export class SeatController implements ISeatController {
     try {
       const { seatId } = req.params;
       await this.seatService.deleteSeat(seatId);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.SEAT_DELETED
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.SEAT_DELETED);
     } catch (error) {
       next(error);
     }
@@ -91,11 +73,7 @@ export class SeatController implements ISeatController {
   async generateSeats(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const result = await this.seatService.generateSeats(req.body);
-      res.status(HttpStatus.OK).json({
-        success: true,
-        message: AppMessages.SEAT_GENERATION_PROCESSED,
-        data: result
-      });
+      sendResponse(res, HttpStatus.OK, AppMessages.SEAT_GENERATION_PROCESSED, result);
     } catch (error) {
       next(error);
     }
