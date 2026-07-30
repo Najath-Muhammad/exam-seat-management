@@ -5,6 +5,7 @@ import { SeatMapDashboard } from '../components/SeatMapDashboard';
 import { SeatMapVisualGrid } from '../components/SeatMapVisualGrid';
 import { CandidateAssignmentsTable } from '../components/CandidateAssignmentsTable';
 import { SeatMapItem } from '../types/seatMap.types';
+import { complaintApi } from '../../complaints/services/complaintApi';
 
 export const SeatAssignmentPage: React.FC = () => {
   const { examId, sessionId } = useParams<{ examId: string; sessionId: string }>();
@@ -41,6 +42,9 @@ export const SeatAssignmentPage: React.FC = () => {
 
   const [showMoveSessionModal, setShowMoveSessionModal] = useState(false);
   const [moveSessionData, setMoveSessionData] = useState({ assignmentId: '', newSessionId: '', newSeatId: '', reason: '' });
+
+  const [showComplaintModal, setShowComplaintModal] = useState(false);
+  const [complaintData, setComplaintData] = useState({ candidateId: '', description: '' });
 
   const [selectedSeatDetails, setSelectedSeatDetails] = useState<SeatMapItem | null>(null);
 
@@ -123,6 +127,18 @@ export const SeatAssignmentPage: React.FC = () => {
     }
   };
 
+  const handleComplaintSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await complaintApi.registerComplaint(complaintData.candidateId, sessionId!, complaintData.description);
+      alert('Complaint registered successfully.');
+      setShowComplaintModal(false);
+      setComplaintData({ candidateId: '', description: '' });
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Failed to register complaint');
+    }
+  };
+
   if (isLoading && !seatMap) return <div>Loading seat map data...</div>;
   if (error) return (
     <div>
@@ -201,6 +217,7 @@ export const SeatAssignmentPage: React.FC = () => {
           onReassignClick={(aId) => { setReassignData({ assignmentId: aId, newSeatId: '', reason: '' }); setShowReassignModal(true); }}
           onMoveSessionClick={openMoveSessionModal}
           onCancelAssignmentClick={handleCancelAssignment}
+          onRegisterComplaintClick={(cId) => { setComplaintData({ candidateId: cId, description: '' }); setShowComplaintModal(true); }}
         />
       )}
 
@@ -332,6 +349,31 @@ export const SeatAssignmentPage: React.FC = () => {
               )}
               <button onClick={() => setSelectedSeatDetails(null)} style={{ padding: '0.5rem 1rem', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', marginLeft: 'auto' }}>Close</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Complaint Modal */}
+      {showComplaintModal && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+          <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', minWidth: '400px' }}>
+            <h3>Register Candidate Complaint</h3>
+            <form onSubmit={handleComplaintSubmit}>
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem' }}>Complaint Description</label>
+                <textarea 
+                  value={complaintData.description} 
+                  onChange={e => setComplaintData({...complaintData, description: e.target.value})} 
+                  required 
+                  placeholder="Describe the issue the candidate is facing..." 
+                  style={{ width: '100%', padding: '0.5rem', minHeight: '100px' }} 
+                />
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+                <button type="submit" style={{ padding: '0.5rem 1rem', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Submit Complaint</button>
+                <button type="button" onClick={() => setShowComplaintModal(false)} style={{ padding: '0.5rem 1rem', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Cancel</button>
+              </div>
+            </form>
           </div>
         </div>
       )}

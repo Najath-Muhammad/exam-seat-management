@@ -19,10 +19,11 @@ interface Props {
   onReassignClick: (assignmentId: string) => void;
   onMoveSessionClick: (assignmentId: string) => void;
   onCancelAssignmentClick: (assignmentId: string) => void;
+  onRegisterComplaintClick: (candidateId: string) => void;
 }
 
 export const CandidateAssignmentsTable: React.FC<Props> = ({ 
-  allCandidatesList, historyAssignments, onManualAssignClick, onReassignClick, onMoveSessionClick, onCancelAssignmentClick 
+  allCandidatesList, historyAssignments, onManualAssignClick, onReassignClick, onMoveSessionClick, onCancelAssignmentClick, onRegisterComplaintClick
 }) => {
   return (
     <div>
@@ -82,6 +83,14 @@ export const CandidateAssignmentsTable: React.FC<Props> = ({
                     </button>
                   </div>
                 )}
+                <div style={{ marginTop: '0.5rem' }}>
+                  <button 
+                    onClick={() => onRegisterComplaintClick(c.candidateId)}
+                    style={{ padding: '0.25rem 0.5rem', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}
+                  >
+                    Log Complaint
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

@@ -21,6 +21,7 @@ import seatMapRoutes from './routes/seatMap.routes';
 import assignmentRoutes from './routes/assignment.routes';
 import historyRoutes from './routes/history.routes';
 import dashboardRoutes from './routes/dashboard.routes';
+import complaintRoutes from './routes/complaint.routes';
 
 const app: Application = express();
 
@@ -86,6 +87,7 @@ app.use('/api/seats', seatRoutes);
 app.use('/api/assignments', assignmentRoutes);
 app.use('/api/admin/history', historyRoutes);
 app.use('/api/admin/dashboard', dashboardRoutes);
+app.use('/api/complaints', complaintRoutes);
 
 // ─── 404 & Global Error Handling ───────────────────────────────────────────────
 
