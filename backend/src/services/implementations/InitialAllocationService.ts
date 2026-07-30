@@ -45,10 +45,10 @@ export class InitialAllocationService implements IInitialAllocationService {
       };
     }
 
-    // Sort candidates by registrationNumber ascending
+    
     unassignedCandidates.sort((a, b) => a.registrationNumber.localeCompare(b.registrationNumber));
 
-    // Sort seats by seatNumber ascending
+    
     availableSeats.sort((a, b) => a.seatNumber.localeCompare(b.seatNumber));
 
     const assignmentsToCreate = [];

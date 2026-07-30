@@ -36,7 +36,6 @@ const assignmentHistorySchema = new Schema(
   }
 );
 
-// Indexes for common queries
 assignmentHistorySchema.index({ candidateId: 1, createdAt: -1 });
 assignmentHistorySchema.index({ examId: 1, sessionId: 1, createdAt: -1 });
 

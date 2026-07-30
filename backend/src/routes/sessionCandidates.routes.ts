@@ -9,7 +9,6 @@ import { UserRole } from '../types/auth.types';
 import multer from 'multer';
 import os from 'os';
 
-// Mounted on /api/sessions/:sessionId/candidates
 const router = Router({ mergeParams: true });
 const { candidateController, sessionController } = container;
 

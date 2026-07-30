@@ -20,14 +20,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const checkAuth = useCallback(async () => {
     try {
-      // Attempt to refresh the session using the HTTP-only cookie
+      
       const refreshData = await authApi.refresh();
       const token = refreshData.data.accessToken;
       
-      // Save token in memory
+      
       setToken(token);
 
-      // Fetch current user details
+      
       const meData = await authApi.getMe();
       
       setAuthState({
@@ -50,7 +50,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     checkAuth();
 
-    // Listen for custom event from Axios interceptor when refresh fails
+    
     const handleRefreshFailed = () => {
       setToken(null);
       setAuthState({

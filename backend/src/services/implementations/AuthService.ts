@@ -27,8 +27,8 @@ export class AuthService implements IAuthService {
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
-    // Store refresh token in Redis with 7 days expiration (matching JWT)
-    const expiresInSeconds = 7 * 24 * 60 * 60; // 7 days
+    
+    const expiresInSeconds = 7 * 24 * 60 * 60; 
     await redisClient.setEx(this.getRedisKey(user.id, refreshToken), expiresInSeconds, 'valid');
 
     return {
@@ -44,28 +44,28 @@ export class AuthService implements IAuthService {
   }
 
   async refreshTokens(oldRefreshToken: string): Promise<ILoginResult> {
-    // 1. Verify JWT signature & expiration
+    
     const payload = verifyRefreshToken(oldRefreshToken);
     const userId = payload.userId;
 
-    // 2. Check if refresh token exists in Redis
+    
     const redisKey = this.getRedisKey(userId, oldRefreshToken);
     const isValid = await redisClient.get(redisKey);
 
     if (!isValid) {
-      // Possible token reuse or revoked session
-      // For tight security, we could revoke ALL sessions for this user here.
-      // await this.revokeAllUserTokens(userId);
+      
+      
+      
       throw new UnauthorizedError('Invalid or expired refresh session');
     }
 
-    // 3. Verify user is still active
+    
     const user = await this.userRepository.findById(userId);
     if (!user || !user.isActive) {
       throw new UnauthorizedError('User inactive or deleted');
     }
 
-    // 4. Rotate token (Delete old, issue new)
+    
     await redisClient.del(redisKey);
 
     const newPayload = { userId: user.id, role: user.role };

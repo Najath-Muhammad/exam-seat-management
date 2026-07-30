@@ -17,7 +17,7 @@ export const AdminLayout: React.FC = () => {
 
   return (
     <div className="app-layout">
-      {/* Sidebar */}
+      {}
       <aside className="sidebar">
         <div className="sidebar-header">
           <h1>⚡ ExamSystem</h1>
@@ -71,7 +71,7 @@ export const AdminLayout: React.FC = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
+      {}
       <main className="main-content">
         <Outlet />
       </main>

@@ -6,7 +6,6 @@ import { UserRole } from '../types/auth.types';
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Load environment config since this runs as a standalone script
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const seedAdmin = async () => {
@@ -30,23 +29,23 @@ const seedAdmin = async () => {
       process.exit(1);
     }
 
-    // Basic email validation
+    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(adminEmail)) {
       console.error('Error: Invalid email format provided for ADMIN_EMAIL');
       process.exit(1);
     }
 
-    // Basic password validation
+    
     if (adminPassword.length < 8) {
       console.error('Error: Weak password provided for ADMIN_PASSWORD (minimum 8 characters required)');
       process.exit(1);
     }
 
-    // Connect to MongoDB
+    
     await connectDatabase();
 
-    // Check whether an ADMIN already exists
+    
     const existingAdmin = await UserModel.findOne({ role: UserRole.ADMIN });
     
     if (existingAdmin) {
@@ -54,17 +53,17 @@ const seedAdmin = async () => {
       process.exit(0);
     }
 
-    // Check if the specific email is already taken by a non-admin user
+    
     const emailExists = await UserModel.findOne({ email: adminEmail });
     if (emailExists) {
       console.error(`Error: Email ${adminEmail} is already registered as a non-admin user. Cannot convert normal user to Admin.`);
       process.exit(1);
     }
 
-    // Hash Admin password
+    
     const passwordHash = await hashPassword(adminPassword);
 
-    // Create User
+    
     await UserModel.create({
       name: adminName,
       email: adminEmail,

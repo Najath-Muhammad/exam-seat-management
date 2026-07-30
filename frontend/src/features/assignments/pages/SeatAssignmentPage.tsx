@@ -32,7 +32,7 @@ export const SeatAssignmentPage: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<'dashboard' | 'candidates' | 'map'>('dashboard');
 
-  // Modals state
+  
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [selectedCandidateId, setSelectedCandidateId] = useState('');
   const [selectedSeatId, setSelectedSeatId] = useState('');
@@ -221,7 +221,7 @@ export const SeatAssignmentPage: React.FC = () => {
         />
       )}
 
-      {/* Manual Assign Modal */}
+      {}
       {showAssignModal && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
           <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', minWidth: '400px' }}>
@@ -254,7 +254,7 @@ export const SeatAssignmentPage: React.FC = () => {
         </div>
       )}
 
-      {/* Reassign Modal */}
+      {}
       {showReassignModal && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
           <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', minWidth: '400px' }}>
@@ -282,7 +282,7 @@ export const SeatAssignmentPage: React.FC = () => {
         </div>
       )}
 
-      {/* Move Session Modal */}
+      {}
       {showMoveSessionModal && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
           <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', minWidth: '450px' }}>
@@ -319,7 +319,7 @@ export const SeatAssignmentPage: React.FC = () => {
         </div>
       )}
 
-      {/* Seat Details Modal */}
+      {}
       {selectedSeatDetails && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
           <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', minWidth: '400px' }}>
@@ -353,7 +353,7 @@ export const SeatAssignmentPage: React.FC = () => {
         </div>
       )}
 
-      {/* Complaint Modal */}
+      {}
       {showComplaintModal && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
           <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', minWidth: '400px' }}>

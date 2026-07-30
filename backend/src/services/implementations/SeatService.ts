@@ -53,8 +53,8 @@ export class SeatService implements ISeatService {
     const seat = await this.seatRepository.findById(seatId);
     if (!seat) throw new NotFoundError('Seat not found');
     
-    // Future: check if seat is referenced in SeatAssignment
-    // Currently, we just delete.
+    
+    
     await this.seatRepository.delete(seatId);
   }
 
@@ -67,7 +67,7 @@ export class SeatService implements ISeatService {
     const generatedSeats: Partial<ISeat>[] = [];
     const seatNumbers: string[] = [];
 
-    // Helper to convert index to letters (0 -> A, 1 -> B, 26 -> AA)
+    
     const getRowLetter = (index: number): string => {
       let letter = '';
       while (index >= 0) {
@@ -80,7 +80,7 @@ export class SeatService implements ISeatService {
     for (let r = 0; r < data.rows; r++) {
       const rowLabel = getRowLetter(r);
       for (let c = 1; c <= data.seatsPerRow; c++) {
-        const colStr = c.toString().padStart(2, '0'); // e.g., 01, 02
+        const colStr = c.toString().padStart(2, '0'); 
         const seatNumber = `${rowLabel}${colStr}`;
         seatNumbers.push(seatNumber);
         generatedSeats.push({

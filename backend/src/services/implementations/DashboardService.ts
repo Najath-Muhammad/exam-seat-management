@@ -17,7 +17,7 @@ export class DashboardService implements IDashboardService {
 
   async getDashboardData(examId?: string, sessionId?: string): Promise<IDashboardData> {
     
-    // Using Mongoose models directly for efficient aggregations on Dashboard
+    
     const totalExams = await ExamModel.countDocuments();
     
     let sessionFilter = {};
@@ -38,7 +38,7 @@ export class DashboardService implements IDashboardService {
     const totalCandidates = await CandidateModel.countDocuments(candidateFilter);
     const { seats, total: totalSeats } = await this.seatRepository.findAll(0, 100000);
 
-    // Active assignments
+    
     const allAssignmentsPromises = validSessionIds.map(sId => this.assignmentRepository.findBySessionId(sId));
     const allAssignmentsArrays = await Promise.all(allAssignmentsPromises);
     const activeAssignments = allAssignmentsArrays.flat().filter(a => a.status === AssignmentStatus.ASSIGNED);
@@ -54,7 +54,7 @@ export class DashboardService implements IDashboardService {
     const maintenance = seats.filter(s => s.status === SeatStatus.MAINTENANCE).length;
     const inactive = seats.filter(s => s.status === SeatStatus.INACTIVE).length;
 
-    // Recent Activity (History)
+    
     const { data: recentHistory } = await this.historyRepository.findWithPagination(
       { examId, sessionId }, 
       0, 

@@ -14,13 +14,13 @@ export const SeatManagementPage: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<'list' | 'map' | 'generate'>('list');
 
-  // Generate Seats State
+  
   const [genRows, setGenRows] = useState('');
   const [genSeatsPerRow, setGenSeatsPerRow] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [genResult, setGenResult] = useState<GenerateSeatsResult | null>(null);
 
-  // Create/Edit Seat State
+  
   const [showAddForm, setShowAddForm] = useState(false);
   const [newSeat, setNewSeat] = useState({ seatNumber: '', row: '', column: '' });
   const [isSaving, setIsSaving] = useState(false);
@@ -40,7 +40,7 @@ export const SeatManagementPage: React.FC = () => {
 
   useEffect(() => {
     fetchSeats();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [page, filterStatus]);
 
   const handleGenerate = async (e: React.FormEvent) => {
@@ -275,7 +275,7 @@ export const SeatManagementPage: React.FC = () => {
             </tbody>
           </table>
 
-          {/* Pagination */}
+          {}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem' }}>
             <span>Showing {filteredSeats.length} on this page (Total {data.total})</span>
             <div>

@@ -1,5 +1,4 @@
-// Simple in-memory token manager to avoid circular dependencies
-// between Axios interceptors and the React AuthContext.
+
 
 let accessToken: string | null = null;
 

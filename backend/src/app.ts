@@ -25,11 +25,9 @@ import complaintRoutes from './routes/complaint.routes';
 
 const app: Application = express();
 
-// ─── Core Middleware ───────────────────────────────────────────────────────────
-
 app.use(helmet());
 app.use(cors({
-  origin: true, // Should be configured properly in production
+  origin: true, 
   credentials: true,
 }));
 app.use(express.json());
@@ -37,8 +35,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // Limit each IP to 1000 requests per `window`
+  windowMs: 15 * 60 * 1000, 
+  max: 1000, 
   standardHeaders: true,
   legacyHeaders: false,
   message: { success: false, message: 'Too many requests, please try again later.' }
@@ -46,7 +44,7 @@ const apiLimiter = rateLimit({
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100, // Stricter limit for auth routes
+  max: 100, 
   message: { success: false, message: 'Too many authentication attempts, please try again later.' }
 });
 
@@ -59,8 +57,6 @@ app.use(
   })
 );
 
-// ─── Health Check ──────────────────────────────────────────────────────────────
-
 app.get('/api/health', (_req: Request, res: Response) => {
   res.status(200).json({
     success: true,
@@ -71,8 +67,6 @@ app.get('/api/health', (_req: Request, res: Response) => {
     }
   });
 });
-
-// ─── API Routes ────────────────────────────────────────────────────────────────
 
 app.use('/api/auth', authRoutes);
 app.use('/api/exams', examRoutes);
@@ -89,10 +83,8 @@ app.use('/api/admin/history', historyRoutes);
 app.use('/api/admin/dashboard', dashboardRoutes);
 app.use('/api/complaints', complaintRoutes);
 
-// ─── 404 & Global Error Handling ───────────────────────────────────────────────
-
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
 export default app;
-// Trigger restart
+

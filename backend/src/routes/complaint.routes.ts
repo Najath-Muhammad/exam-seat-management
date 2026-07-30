@@ -8,7 +8,6 @@ import { ForbiddenError } from '../errors';
 
 const router = Router();
 
-// Role guard middleware
 const requireRole = (roles: UserRole[]) => (req: Request, _res: Response, next: NextFunction) => {
   const user = (req as IAuthenticatedRequest).user;
   if (!user || !roles.includes(user.role)) {
@@ -21,7 +20,6 @@ const complaintRepository = new ComplaintRepository();
 const complaintService = new ComplaintService(complaintRepository);
 const complaintController = new ComplaintController(complaintService);
 
-// All complaint routes require at least INVIGILATOR or ADMIN access
 router.use(authMiddleware);
 router.use(requireRole([UserRole.ADMIN, UserRole.STAFF]));
 

@@ -26,7 +26,7 @@ export const errorMiddleware = (
     return;
   }
 
-  // Handle unexpected errors
+  
   logger.error('Unexpected error:', err);
 
   res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

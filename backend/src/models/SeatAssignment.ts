@@ -36,13 +36,11 @@ const SeatAssignmentSchema = new Schema<ISeatAssignment>(
   { timestamps: true }
 );
 
-// Enforce unique active assignments per candidate per session
 SeatAssignmentSchema.index(
   { sessionId: 1, candidateId: 1 },
   { unique: true, partialFilterExpression: { status: AssignmentStatus.ASSIGNED } }
 );
 
-// Enforce unique active assignments per seat per session
 SeatAssignmentSchema.index(
   { sessionId: 1, seatId: 1 },
   { unique: true, partialFilterExpression: { status: AssignmentStatus.ASSIGNED } }

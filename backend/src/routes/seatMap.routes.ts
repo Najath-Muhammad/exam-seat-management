@@ -5,7 +5,6 @@ import { authMiddleware } from '../middlewares/auth.middleware';
 import { roleMiddleware } from '../middlewares/role.middleware';
 import { UserRole } from '../types/auth.types';
 
-// Mounted on /api/sessions/:sessionId/seat-map
 const router = Router({ mergeParams: true });
 const { seatMapController } = container;
 

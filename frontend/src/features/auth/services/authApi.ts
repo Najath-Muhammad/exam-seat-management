@@ -3,7 +3,7 @@ import { LoginResponse, RefreshResponse } from '../types/auth.types';
 
 export const authApi = {
   login: async (credentials: { email: string; passwordPlain?: string; password?: string }) => {
-    // Backend expects 'password', but prompt used 'passwordPlain' in one spot, so mapping both just in case
+    
     const payload = {
       email: credentials.email,
       password: credentials.password || credentials.passwordPlain,

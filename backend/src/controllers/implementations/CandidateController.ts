@@ -97,11 +97,11 @@ export class CandidateController implements ICandidateController {
       });
 
       parser.on('end', async () => {
-        // Clean up uploaded file
+        
         fs.unlinkSync(req.file!.path);
 
         try {
-          // Normalize row headers to camelCase and validate
+          
           const mappedRecords = records.map(row => ({
             registrationNumber: row.registrationNumber || row.RegistrationNumber || row['Registration Number'],
             name: row.name || row.Name,
@@ -109,7 +109,7 @@ export class CandidateController implements ICandidateController {
             phone: row.phone || row.Phone,
           }));
 
-          // Validate minimum fields
+          
           if (mappedRecords.some(r => !r.registrationNumber || !r.name)) {
             sendResponse(res, HttpStatus.BAD_REQUEST, AppMessages.CSV_COLUMNS_REQUIRED);
             return;

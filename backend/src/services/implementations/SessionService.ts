@@ -10,24 +10,24 @@ export class SessionService implements ISessionService {
   constructor(private readonly sessionRepository: ISessionRepository) {}
 
   async createSession(data: ICreateSessionDTO): Promise<ISession> {
-    // 1. Verify Exam exists
+    
     const examExists = await ExamModel.exists({ _id: data.examId });
     if (!examExists) {
       throw new NotFoundError('Exam not found');
     }
 
-    // 2. Validate time
+    
     if (new Date(data.endAt) <= new Date(data.startAt)) {
       throw new BadRequestError('endAt must be after startAt');
     }
 
-    // 3. Check duplicate session number
+    
     const existingSessionNum = await this.sessionRepository.findByExamIdAndNumber(data.examId, data.sessionNumber);
     if (existingSessionNum) {
       throw new ConflictError(`Session number ${data.sessionNumber} already exists for this exam`);
     }
 
-    // 4. Check overlap
+    
     const overlaps = await this.sessionRepository.findOverlappingSessions(
       data.examId,
       new Date(data.startAt),
@@ -37,7 +37,7 @@ export class SessionService implements ISessionService {
       throw new ConflictError('Session time overlaps with an existing session in this exam');
     }
 
-    // 5. Create session
+    
     return this.sessionRepository.create({
       ...data,
       examId: new Types.ObjectId(data.examId) as any,
@@ -67,7 +67,7 @@ export class SessionService implements ISessionService {
       throw new NotFoundError('Session not found');
     }
 
-    // Rule 5: Do not freely modify completed sessions.
+    
     if (session.status === SessionStatus.COMPLETED && data.status !== SessionStatus.COMPLETED) {
       throw new BadRequestError('Cannot modify a completed session');
     }
@@ -82,7 +82,7 @@ export class SessionService implements ISessionService {
       throw new BadRequestError('endAt must be after startAt');
     }
 
-    // Check overlap if time changed
+    
     if (data.startAt || data.endAt) {
       const overlaps = await this.sessionRepository.findOverlappingSessions(
         session.examId.toString(),

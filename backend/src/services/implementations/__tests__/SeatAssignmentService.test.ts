@@ -56,7 +56,7 @@ describe('SeatAssignmentService - Transactions & Concurrency', () => {
       mockHistoryRepo
     );
 
-    // Mock mongoose sessions
+    
     jest.spyOn(mongoose, 'startSession').mockResolvedValue({
       startTransaction: jest.fn(),
       commitTransaction: jest.fn(),
@@ -119,7 +119,7 @@ describe('SeatAssignmentService - Transactions & Concurrency', () => {
     mockCandidateRepo.findById.mockResolvedValue({ _id: 'cand1', sessionId: 'session1' } as any);
     mockSeatRepo.findById.mockResolvedValue({ _id: 'seat1', status: 'ACTIVE', seatNumber: 'A1' } as any);
     
-    // Seat is already occupied
+    
     mockAssignmentRepo.findActiveByCandidateAndSession.mockResolvedValue(null);
     mockAssignmentRepo.findActiveBySeatAndSession.mockResolvedValue({ _id: 'existingAssign' } as any);
 

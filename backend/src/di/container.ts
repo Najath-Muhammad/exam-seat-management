@@ -64,8 +64,6 @@ import { IAssignmentHistoryController } from '../controllers/interfaces/IAssignm
 import { IDashboardService } from '../services/interfaces/IDashboardService';
 import { IDashboardController } from '../controllers/interfaces/IDashboardController';
 
-
-// Initialize repositories
 const userRepository: IUserRepository = new UserRepository();
 const sessionRepository: ISessionRepository = new SessionRepository();
 const candidateRepository: ICandidateRepository = new CandidateRepository();
@@ -73,7 +71,6 @@ const seatRepository: ISeatRepository = new SeatRepository();
 const seatAssignmentRepository: ISeatAssignmentRepository = new SeatAssignmentRepository();
 const assignmentHistoryRepository: IAssignmentHistoryRepository = new AssignmentHistoryRepository();
 
-// Initialize services
 const authService: IAuthService = new AuthService(userRepository);
 const sessionService: ISessionService = new SessionService(sessionRepository);
 const candidateService: ICandidateService = new CandidateService(candidateRepository, sessionRepository);
@@ -105,7 +102,6 @@ const dashboardService: IDashboardService = new DashboardService(
   assignmentHistoryRepository
 );
 
-// Initialize controllers
 const authController: IAuthController = new AuthController(authService);
 const sessionController: ISessionController = new SessionController(sessionService);
 const candidateController: ICandidateController = new CandidateController(candidateService);

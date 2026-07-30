@@ -15,8 +15,8 @@ export class AuthController implements IAuthController {
       httpOnly: true,
       secure: env.NODE_ENV === 'production',
       sameSite: 'strict',
-      path: '/api/auth', // Restrict cookie to auth endpoints
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+      path: '/api/auth', 
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
     });
   }
 
@@ -64,7 +64,7 @@ export class AuthController implements IAuthController {
           user: result.user,
         },);
     } catch (error) {
-      // If refresh fails, clear the cookie
+      
       this.clearRefreshCookie(res);
       next(error);
     }
@@ -73,12 +73,12 @@ export class AuthController implements IAuthController {
   async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const refreshToken = req.cookies?.refreshToken;
-      // Depending on auth flow, logout can also verify the access token first, 
-      // but here we just need the refresh token to revoke it.
+      
+      
       if (refreshToken) {
-        // Decode it roughly just to get userId, or better, pass the whole token to auth service
-        // Since verifyRefreshToken throws if invalid, we just decode to get user id safely or let service handle it.
-        // Wait, logout might not have access token, so we just decode refresh token:
+        
+        
+        
         import('jsonwebtoken').then(({ decode }) => {
           const decoded = decode(refreshToken) as any;
           if (decoded && decoded.userId) {

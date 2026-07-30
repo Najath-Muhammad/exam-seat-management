@@ -2,7 +2,7 @@ import { Request } from 'express';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
-  STAFF = 'STAFF', // Placeholder for future use
+  STAFF = 'STAFF', 
 }
 
 export interface IJwtPayload {

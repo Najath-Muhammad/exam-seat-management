@@ -7,7 +7,6 @@ import { authMiddleware } from '../middlewares/auth.middleware';
 import { roleMiddleware } from '../middlewares/role.middleware';
 import { UserRole } from '../types/auth.types';
 
-// Mounted on /api/sessions/:sessionId/assignments
 const router = Router({ mergeParams: true });
 const { seatAssignmentController } = container;
 

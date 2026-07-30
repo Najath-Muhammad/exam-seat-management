@@ -14,10 +14,10 @@ export class AppError extends Error {
     this.isOperational = isOperational;
     this.errors = errors;
 
-    // Restore prototype chain
+    
     Object.setPrototypeOf(this, new.target.prototype);
 
-    // Capture stack trace, excluding the constructor call from it
+    
     Error.captureStackTrace(this, this.constructor);
   }
 }

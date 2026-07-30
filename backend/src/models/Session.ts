@@ -32,7 +32,6 @@ const SessionSchema = new Schema<ISession>(
   { timestamps: true }
 );
 
-// Session number must be unique within an exam
 SessionSchema.index({ examId: 1, sessionNumber: 1 }, { unique: true });
 
 export const SessionModel = model<ISession>('Session', SessionSchema);

@@ -18,7 +18,7 @@ export const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   useEffect(() => {
     if (isAuthenticated && accessToken) {
-      // Connect to the backend
+      
       const newSocket = io('http://localhost:5000', {
         auth: { token: accessToken },
         transports: ['websocket'],
@@ -44,7 +44,7 @@ export const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       setSocket(null);
       setIsConnected(false);
     }
-  }, [isAuthenticated, accessToken]); // Only re-run when auth changes
+  }, [isAuthenticated, accessToken]); 
 
   return (
     <SocketContext.Provider value={{ socket, isConnected }}>

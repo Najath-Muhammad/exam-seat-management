@@ -28,7 +28,7 @@ export class SeatMapService implements ISeatMapService {
 
     const activeAssignments = allAssignments.filter(a => a.status === AssignmentStatus.ASSIGNED);
     
-    // Create lookups
+    
     const assignmentBySeatId = new Map(activeAssignments.map(a => [(a.seatId as any)._id.toString(), a]));
     const candidateById = new Map(allCandidates.map(c => [c._id.toString(), c]));
     const assignedCandidateIds = new Set(activeAssignments.map(a => (a.candidateId as any)._id.toString()));
@@ -166,7 +166,7 @@ export class SeatMapService implements ISeatMapService {
     const assignedCount = candidateCounts.size;
     const occupiedCount = seatCounts.size;
     
-    // Active seats that are not occupied
+    
     const activeSeatCount = allSeats.filter(s => s.status === SeatStatus.ACTIVE).length;
     const vacantCount = Math.max(0, activeSeatCount - occupiedCount);
     const unassignedCount = Math.max(0, allCandidates.length - assignedCount);

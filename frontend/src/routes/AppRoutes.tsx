@@ -27,7 +27,7 @@ export const AppRoutes: React.FC = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-      {/* Admin Protected Routes */}
+      {}
       <Route element={<ProtectedRoute />}>
         <Route element={<RoleProtectedRoute allowedRoles={[UserRole.ADMIN]} />}>
           <Route path="/admin" element={<AdminLayout />}>

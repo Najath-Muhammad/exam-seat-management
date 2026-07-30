@@ -91,8 +91,8 @@ export class CandidateService implements ICandidateService {
     let failed = 0;
     const errors: any[] = [];
 
-    // Check DB for existing reg numbers to avoid duplicate key errors silently failing whole batches if we used insertMany without handling
-    // For large imports, bulkWrite or batching is better, but this is sufficient for typical <500 sizes.
+    
+    
     const allRegNums = candidates.map(c => c.registrationNumber);
     const uniqueRegNums = new Set(allRegNums);
     

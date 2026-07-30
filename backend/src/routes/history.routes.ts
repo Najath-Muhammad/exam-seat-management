@@ -5,7 +5,6 @@ import { authMiddleware } from '../middlewares/auth.middleware';
 import { roleMiddleware } from '../middlewares/role.middleware';
 import { UserRole } from '../types/auth.types';
 
-// Mounted on /api/admin/history
 const router = Router();
 const { assignmentHistoryController } = container;
 

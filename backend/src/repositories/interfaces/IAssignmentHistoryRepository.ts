@@ -4,9 +4,9 @@ import { HistoryAction } from '../../types/assignmentHistory.types';
 
 export interface IHistoryFilter {
   examId?: string;
-  sessionId?: string; // matches either oldSessionId or newSessionId
+  sessionId?: string; 
   candidateId?: string;
-  seatId?: string; // matches either oldSeatId or newSeatId
+  seatId?: string; 
   action?: HistoryAction;
   adminId?: string;
   dateFrom?: Date;

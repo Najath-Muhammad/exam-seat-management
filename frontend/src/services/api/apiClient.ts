@@ -5,10 +5,9 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true, // Crucial for sending/receiving HTTP-only refresh cookies
+  withCredentials: true, 
 });
 
-// Request interceptor to add the access token
 apiClient.interceptors.request.use(
   (config) => {
     const token = getToken();
@@ -20,9 +19,8 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Flag to prevent infinite refresh loops
 let isRefreshing = false;
-// Queue for pending requests while refreshing
+
 let failedQueue: Array<{
   resolve: (value?: unknown) => void;
   reject: (reason?: any) => void;
@@ -39,20 +37,19 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
-// Response interceptor to handle 401 and automatic refresh
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // If 401 and we haven't already retried this request, and it's not a refresh request itself
+    
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
       originalRequest.url !== '/auth/refresh'
     ) {
       if (isRefreshing) {
-        // If already refreshing, queue this request
+        
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
@@ -67,7 +64,7 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Use a separate plain axios call to avoid interceptor loops
+        
         const refreshResponse = await axios.post(
           `${BASE_URL}/auth/refresh`,
           {},
@@ -84,7 +81,7 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null);
         setToken(null);
-        // Dispatch a custom event to notify AuthProvider to clear state
+        
         window.dispatchEvent(new Event('auth:refresh-failed'));
         return Promise.reject(refreshError);
       } finally {

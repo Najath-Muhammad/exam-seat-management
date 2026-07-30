@@ -21,7 +21,7 @@ export const LoginPage: React.FC = () => {
       navigate('/admin');
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.message) {
-        // Validation errors might be in err.response.data.errors array
+        
         if (err.response.data.errors && Array.isArray(err.response.data.errors)) {
            setError(err.response.data.errors[0].message);
         } else {

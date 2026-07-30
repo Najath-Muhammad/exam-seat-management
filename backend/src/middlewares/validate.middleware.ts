@@ -13,7 +13,7 @@ export const validate = (schema: ZodSchema) => {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        // Format Zod errors into a readable structure
+        
         const formattedErrors = error.issues.map((err) => ({
           path: err.path.join('.'),
           message: err.message,

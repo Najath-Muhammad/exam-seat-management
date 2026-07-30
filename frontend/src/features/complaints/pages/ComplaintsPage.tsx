@@ -18,11 +18,11 @@ export const ComplaintsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState('');
 
-  // Resolve modal state
+  
   const [resolveModal, setResolveModal] = useState<{ id: string; status: string; remarks: string } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Register complaint modal state
+  
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [exams, setExams] = useState<Exam[]>([]);
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -47,12 +47,12 @@ export const ComplaintsPage: React.FC = () => {
 
   useEffect(() => { fetchComplaints(); }, []);
 
-  // Load exams when register modal opens
+  
   const openRegisterModal = async () => {
     try {
       const data = await sessionApi.getExams();
       setExams(data);
-    } catch { /* silently fail */ }
+    } catch {  }
     setRegisterForm({ examId: '', sessionId: '', candidateId: '', description: '' });
     setSessions([]);
     setCandidates([]);
@@ -67,7 +67,7 @@ export const ComplaintsPage: React.FC = () => {
     try {
       const data = await sessionApi.getSessions(examId);
       setSessions(data);
-    } catch { /* ignore */ } finally { setIsLoadingSessions(false); }
+    } catch {  } finally { setIsLoadingSessions(false); }
   };
 
   const handleSessionChange = async (sessionId: string) => {
@@ -78,7 +78,7 @@ export const ComplaintsPage: React.FC = () => {
     try {
       const result = await candidateApi.getCandidatesBySession(sessionId, 1, 200);
       setCandidates(result.candidates);
-    } catch { /* ignore */ } finally { setIsLoadingCandidates(false); }
+    } catch {  } finally { setIsLoadingCandidates(false); }
   };
 
   const handleRegisterComplaint = async (e: React.FormEvent) => {
@@ -148,7 +148,7 @@ export const ComplaintsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Summary Cards */}
+      {}
       <div className="grid-cards" style={{ marginBottom: '2rem' }}>
         {Object.entries(counts).map(([status, count]) => (
           <div
@@ -163,7 +163,7 @@ export const ComplaintsPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Filter */}
+      {}
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', alignItems: 'center' }}>
         <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ width: '200px' }}>
           <option value="">All Statuses ({complaints.length})</option>
@@ -179,7 +179,7 @@ export const ComplaintsPage: React.FC = () => {
         )}
       </div>
 
-      {/* Table */}
+      {}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {filtered.length === 0 ? (
           <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
@@ -246,7 +246,7 @@ export const ComplaintsPage: React.FC = () => {
         )}
       </div>
 
-      {/* Update Status Modal */}
+      {}
       {resolveModal && (
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
           <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '16px', minWidth: '440px', boxShadow: 'var(--shadow-lg)' }}>
@@ -287,7 +287,7 @@ export const ComplaintsPage: React.FC = () => {
         </div>
       )}
 
-      {/* Register Complaint Modal */}
+      {}
       {showRegisterModal && (
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
           <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '16px', minWidth: '480px', boxShadow: 'var(--shadow-lg)' }}>

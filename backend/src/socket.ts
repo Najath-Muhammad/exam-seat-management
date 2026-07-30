@@ -13,7 +13,7 @@ export const initializeSocket = (httpServer: HttpServer) => {
     }
   });
 
-  // Socket Authentication Middleware
+  
   io.use((socket: Socket, next) => {
     const token = socket.handshake.auth.token || socket.handshake.headers['authorization']?.split(' ')[1];
     
@@ -24,7 +24,7 @@ export const initializeSocket = (httpServer: HttpServer) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as any;
       
-      // Authorization Check
+      
       if (decoded.role !== UserRole.ADMIN) {
         return next(new Error('Authorization error: Admin role required'));
       }
@@ -39,7 +39,7 @@ export const initializeSocket = (httpServer: HttpServer) => {
   io.on('connection', (socket: Socket) => {
     console.log(`Admin connected via Socket.IO: ${socket.id}`);
 
-    // Join global admin room
+    
     socket.join('admin-room');
 
     socket.on('disconnect', () => {
