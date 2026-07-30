@@ -15,7 +15,7 @@ export class SessionController implements ISessionController {
       });
       res.status(HttpStatus.CREATED).json({
         success: true,
-        message: 'Session created successfully',
+        message: AppMessages.SESSION_CREATED,
         data: session
       });
     } catch (error) {
@@ -29,7 +29,7 @@ export class SessionController implements ISessionController {
       const sessions = await this.sessionService.getSessionsByExamId(examId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Sessions retrieved successfully',
+        message: AppMessages.SESSIONS_RETRIEVED,
         data: sessions
       });
     } catch (error) {
@@ -43,7 +43,7 @@ export class SessionController implements ISessionController {
       const session = await this.sessionService.getSessionById(sessionId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Session retrieved successfully',
+        message: AppMessages.SESSION_RETRIEVED,
         data: session
       });
     } catch (error) {
@@ -57,7 +57,7 @@ export class SessionController implements ISessionController {
       const session = await this.sessionService.updateSession(sessionId, req.body);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Session updated successfully',
+        message: AppMessages.SESSION_UPDATED,
         data: session
       });
     } catch (error) {
@@ -71,7 +71,7 @@ export class SessionController implements ISessionController {
       await this.sessionService.deleteSession(sessionId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Session deleted successfully'
+        message: AppMessages.SESSION_DELETED
       });
     } catch (error) {
       next(error);
@@ -84,7 +84,7 @@ export class SessionController implements ISessionController {
       const session = await this.sessionService.finalizeCandidates(sessionId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Candidate list finalized successfully',
+        message: AppMessages.CANDIDATE_LIST_FINALIZED,
         data: session
       });
     } catch (error) {

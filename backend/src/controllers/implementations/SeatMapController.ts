@@ -12,7 +12,7 @@ export class SeatMapController implements ISeatMapController {
       const data = await this.seatMapService.getSeatMap(sessionId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Seat map retrieved successfully',
+        message: AppMessages.SEAT_MAP_RETRIEVED,
         data
       });
     } catch (error) {
@@ -26,7 +26,7 @@ export class SeatMapController implements ISeatMapController {
       const data = await this.seatMapService.getRecoveryStatus(sessionId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Recovery status retrieved successfully',
+        message: AppMessages.RECOVERY_STATUS_RETRIEVED,
         data
       });
     } catch (error) {

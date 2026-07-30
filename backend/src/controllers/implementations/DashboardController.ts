@@ -15,7 +15,7 @@ export class DashboardController implements IDashboardController {
 
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Dashboard data retrieved successfully',
+        message: AppMessages.DASHBOARD_DATA_RETRIEVED,
         data
       });
     } catch (error) {

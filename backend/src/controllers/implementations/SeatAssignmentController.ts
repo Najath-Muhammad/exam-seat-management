@@ -16,7 +16,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const assignment = await this.assignmentService.assignSeat({ sessionId, candidateId, seatId, adminId });
       res.status(HttpStatus.CREATED).json({
         success: true,
-        message: 'Seat assigned successfully',
+        message: AppMessages.SEAT_ASSIGNED,
         data: assignment
       });
     } catch (error) {
@@ -30,7 +30,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const assignments = await this.assignmentService.getSessionAssignments(sessionId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Assignments retrieved successfully',
+        message: AppMessages.ASSIGNMENTS_RETRIEVED,
         data: assignments
       });
     } catch (error) {
@@ -44,7 +44,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const seats = await this.assignmentService.getAvailableSeats(sessionId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Available seats retrieved successfully',
+        message: AppMessages.AVAILABLE_SEATS_RETRIEVED,
         data: seats
       });
     } catch (error) {
@@ -58,7 +58,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const assignments = await this.assignmentService.getCandidateAssignment(candidateId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Candidate assignment history retrieved successfully',
+        message: AppMessages.CANDIDATE_ASSIGNMENT_HISTORY_RETRIEVED,
         data: assignments
       });
     } catch (error) {
@@ -75,7 +75,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const assignment = await this.assignmentService.reassignSeat({ assignmentId, newSeatId, reason, adminId });
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Seat reassigned successfully',
+        message: AppMessages.SEAT_REASSIGNED,
         data: assignment
       });
     } catch (error) {
@@ -99,7 +99,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
 
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Candidate moved to new session successfully',
+        message: AppMessages.CANDIDATE_MOVED,
         data
       });
     } catch (error) {
@@ -115,7 +115,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const assignment = await this.assignmentService.cancelAssignment({ assignmentId, adminId });
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Assignment cancelled successfully',
+        message: AppMessages.ASSIGNMENT_CANCELLED,
         data: assignment
       });
     } catch (error) {
@@ -131,7 +131,7 @@ export class SeatAssignmentController implements ISeatAssignmentController {
       const result = await this.assignmentService.autoAssignSeats(sessionId, adminId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Auto assignment completed',
+        message: AppMessages.AUTO_ASSIGNMENT_COMPLETED,
         data: result
       });
     } catch (error) {

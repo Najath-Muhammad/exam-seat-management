@@ -36,7 +36,7 @@ export class AuthController implements IAuthController {
 
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Login successful',
+        message: AppMessages.LOGIN_SUCCESSFUL,
         data: {
           accessToken: result.accessToken,
           user: result.user,
@@ -53,7 +53,7 @@ export class AuthController implements IAuthController {
       if (!refreshToken) {
         res.status(HttpStatus.UNAUTHORIZED).json({
           success: false,
-          message: 'Refresh token missing',
+          message: AppMessages.REFRESH_TOKEN_MISSING,
         });
         return;
       }
@@ -64,7 +64,7 @@ export class AuthController implements IAuthController {
 
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Token refreshed successfully',
+        message: AppMessages.TOKEN_REFRESHED,
         data: {
           accessToken: result.accessToken,
           user: result.user,
@@ -98,7 +98,7 @@ export class AuthController implements IAuthController {
 
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Logout successful',
+        message: AppMessages.LOGOUT_SUCCESSFUL,
       });
     } catch (error) {
       next(error);
@@ -113,7 +113,7 @@ export class AuthController implements IAuthController {
 
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'User details fetched',
+        message: AppMessages.USER_DETAILS_FETCHED,
         data: { user },
       });
     } catch (error) {

@@ -27,7 +27,7 @@ export class AssignmentHistoryController implements IAssignmentHistoryController
 
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Assignment history retrieved successfully',
+        message: AppMessages.ASSIGNMENT_HISTORY_RETRIEVED,
         data: result
       });
     } catch (error) {
@@ -42,7 +42,7 @@ export class AssignmentHistoryController implements IAssignmentHistoryController
 
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Candidate assignment history retrieved successfully',
+        message: AppMessages.CANDIDATE_ASSIGNMENT_HISTORY_RETRIEVED,
         data: history
       });
     } catch (error) {

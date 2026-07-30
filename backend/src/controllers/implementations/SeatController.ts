@@ -11,7 +11,7 @@ export class SeatController implements ISeatController {
       const seat = await this.seatService.createSeat(req.body);
       res.status(HttpStatus.CREATED).json({
         success: true,
-        message: 'Seat created successfully',
+        message: AppMessages.SEAT_CREATED,
         data: seat
       });
     } catch (error) {
@@ -32,7 +32,7 @@ export class SeatController implements ISeatController {
       const result = await this.seatService.getSeats(skip, limit, query);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Seats retrieved successfully',
+        message: AppMessages.SEATS_RETRIEVED,
         data: {
           seats: result.seats,
           total: result.total,
@@ -52,7 +52,7 @@ export class SeatController implements ISeatController {
       const seat = await this.seatService.getSeatById(seatId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Seat retrieved successfully',
+        message: AppMessages.SEAT_RETRIEVED,
         data: seat
       });
     } catch (error) {
@@ -66,7 +66,7 @@ export class SeatController implements ISeatController {
       const seat = await this.seatService.updateSeat(seatId, req.body);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Seat updated successfully',
+        message: AppMessages.SEAT_UPDATED,
         data: seat
       });
     } catch (error) {
@@ -80,7 +80,7 @@ export class SeatController implements ISeatController {
       await this.seatService.deleteSeat(seatId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Seat deleted successfully'
+        message: AppMessages.SEAT_DELETED
       });
     } catch (error) {
       next(error);
@@ -92,7 +92,7 @@ export class SeatController implements ISeatController {
       const result = await this.seatService.generateSeats(req.body);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Seat generation processed',
+        message: AppMessages.SEAT_GENERATION_PROCESSED,
         data: result
       });
     } catch (error) {

@@ -17,7 +17,7 @@ export class CandidateController implements ICandidateController {
       });
       res.status(HttpStatus.CREATED).json({
         success: true,
-        message: 'Candidate created successfully',
+        message: AppMessages.CANDIDATE_CREATED,
         data: candidate
       });
     } catch (error) {
@@ -35,7 +35,7 @@ export class CandidateController implements ICandidateController {
       const result = await this.candidateService.getCandidatesBySession(sessionId, skip, limit);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Candidates retrieved successfully',
+        message: AppMessages.CANDIDATES_RETRIEVED,
         data: {
           candidates: result.candidates,
           total: result.total,
@@ -55,7 +55,7 @@ export class CandidateController implements ICandidateController {
       const candidate = await this.candidateService.getCandidateById(candidateId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Candidate retrieved successfully',
+        message: AppMessages.CANDIDATE_RETRIEVED,
         data: candidate
       });
     } catch (error) {
@@ -69,7 +69,7 @@ export class CandidateController implements ICandidateController {
       const candidate = await this.candidateService.updateCandidate(candidateId, req.body);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Candidate updated successfully',
+        message: AppMessages.CANDIDATE_UPDATED,
         data: candidate
       });
     } catch (error) {
@@ -83,7 +83,7 @@ export class CandidateController implements ICandidateController {
       await this.candidateService.deleteCandidate(candidateId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Candidate deleted successfully'
+        message: AppMessages.CANDIDATE_DELETED
       });
     } catch (error) {
       next(error);
@@ -94,7 +94,7 @@ export class CandidateController implements ICandidateController {
     try {
       const { sessionId } = req.params;
       if (!req.file) {
-        res.status(HttpStatus.BAD_REQUEST).json({ success: false, message: 'CSV file is required' });
+        res.status(HttpStatus.BAD_REQUEST).json({ success: false, message: AppMessages.CSV_FILE_REQUIRED });
         return;
       }
 
@@ -128,14 +128,14 @@ export class CandidateController implements ICandidateController {
 
           // Validate minimum fields
           if (mappedRecords.some(r => !r.registrationNumber || !r.name)) {
-            res.status(HttpStatus.BAD_REQUEST).json({ success: false, message: 'CSV must contain registrationNumber and name columns' });
+            res.status(HttpStatus.BAD_REQUEST).json({ success: false, message: AppMessages.CSV_COLUMNS_REQUIRED });
             return;
           }
 
           const result = await this.candidateService.bulkImport(sessionId, mappedRecords);
           res.status(HttpStatus.OK).json({
             success: true,
-            message: 'Bulk import processed',
+            message: AppMessages.BULK_IMPORT_PROCESSED,
             data: result
           });
         } catch (error) {

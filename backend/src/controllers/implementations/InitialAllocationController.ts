@@ -15,7 +15,7 @@ export class InitialAllocationController implements IInitialAllocationController
       const result = await this.initialAllocationService.runInitialAllocation(sessionId, adminId);
       res.status(HttpStatus.OK).json({
         success: true,
-        message: 'Initial allocation completed',
+        message: AppMessages.INITIAL_ALLOCATION_COMPLETED,
         data: result
       });
     } catch (error) {
